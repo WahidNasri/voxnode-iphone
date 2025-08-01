@@ -171,7 +171,7 @@ struct LinphoneApp: App {
 							&& meetingViewModel != nil 
 							&& conversationForwardMessageViewModel != nil
 							&& accountProfileViewModel != nil {
-					ContentView(
+					VoxContentView(
 						contactViewModel: contactViewModel!,
 						editContactViewModel: editContactViewModel!,
 						historyViewModel: historyViewModel!,
