@@ -40,13 +40,13 @@ struct AddParticipantsFragment: View {
 			VStack(spacing: 16) {
 				if #available(iOS 16.0, *) {
 					Rectangle()
-						.foregroundColor(Color.orangeMain500)
+						.foregroundColor(Color.lightBlueMain500)
 						.edgesIgnoringSafeArea(.top)
 						.frame(height: 0)
 				} else if idiom != .pad && !(orientation == .landscapeLeft || orientation == .landscapeRight
 											 || UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height) {
 					Rectangle()
-						.foregroundColor(Color.orangeMain500)
+						.foregroundColor(Color.lightBlueMain500)
 						.edgesIgnoringSafeArea(.top)
 						.frame(height: 1)
 				}
@@ -54,7 +54,7 @@ struct AddParticipantsFragment: View {
 					Image("caret-left")
 						.renderingMode(.template)
 						.resizable()
-						.foregroundStyle(Color.orangeMain500)
+						.foregroundStyle(Color.lightBlueMain500)
 						.frame(width: 25, height: 25, alignment: .leading)
 						.padding(.all, 10)
 						.padding(.top, 2)
@@ -153,7 +153,7 @@ struct AddParticipantsFragment: View {
 				.overlay(
 					RoundedRectangle(cornerRadius: 60)
 						.inset(by: 0.5)
-						.stroke(isSearchFieldFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+						.stroke(isSearchFieldFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 				)
 				.padding(.vertical)
 				.padding(.horizontal)
@@ -202,7 +202,7 @@ struct AddParticipantsFragment: View {
 								Text((contactsManager.lastSearch[index].friend?.name)!)
 									.default_text_style(styleSize: 16)
 									.frame(maxWidth: .infinity, alignment: .leading)
-									.foregroundStyle(Color.orangeMain500)
+									.foregroundStyle(Color.lightBlueMain500)
 								Spacer()
 								
 							}
@@ -239,7 +239,7 @@ struct AddParticipantsFragment: View {
 					.renderingMode(.template)
 					.foregroundStyle(.white)
 					.padding()
-					.background(Color.orangeMain500)
+					.background(Color.lightBlueMain500)
 					.clipShape(Circle())
 					.shadow(color: .black.opacity(0.2), radius: 4)
 				
@@ -271,7 +271,7 @@ struct AddParticipantsFragment: View {
 							Text(contactsManager.lastSearchSuggestions[index].address?.displayName ?? "")
 								.default_text_style(styleSize: 16)
 								.frame(maxWidth: .infinity, alignment: .leading)
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 						} else if contactsManager.lastSearchSuggestions[index].address!.username != nil {
 							Image(uiImage: contactsManager.textToImage(
 								firstName: contactsManager.lastSearchSuggestions[index].address!.username!,
@@ -283,7 +283,7 @@ struct AddParticipantsFragment: View {
 							Text(contactsManager.lastSearchSuggestions[index].address!.username ?? "")
 								.default_text_style(styleSize: 16)
 								.frame(maxWidth: .infinity, alignment: .leading)
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 						} else {
 							Image(uiImage: contactsManager.textToImage(
 								firstName: String(contactsManager.lastSearchSuggestions[index].address!.asStringUriOnly().dropFirst(4)),
@@ -295,7 +295,7 @@ struct AddParticipantsFragment: View {
 							Text(String(contactsManager.lastSearchSuggestions[index].address!.asStringUriOnly().dropFirst(4)))
 								.default_text_style(styleSize: 16)
 								.frame(maxWidth: .infinity, alignment: .leading)
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 						}
 					} else {
 						Image("profil-picture-default")
@@ -306,7 +306,7 @@ struct AddParticipantsFragment: View {
 						Text("username_error")
 							.default_text_style(styleSize: 16)
 							.frame(maxWidth: .infinity, alignment: .leading)
-							.foregroundStyle(Color.orangeMain500)
+							.foregroundStyle(Color.lightBlueMain500)
 					}
 				}
 				.padding(.horizontal)

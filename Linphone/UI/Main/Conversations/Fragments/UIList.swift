@@ -51,7 +51,7 @@ class FloatingButton: UIButton {
 		// Set the button's appearance
 		self.setImage(UIImage(named: "caret-down")?.withRenderingMode(.alwaysTemplate), for: .normal)
 		self.tintColor = .white
-		self.backgroundColor = UIColor(Color.orangeMain500)
+		self.backgroundColor = UIColor(Color.lightBlueMain500)
 		self.layer.cornerRadius = 30
 		self.layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
 		self.layer.shadowOffset = CGSize(width: 0, height: 2)

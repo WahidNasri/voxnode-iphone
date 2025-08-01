@@ -131,7 +131,7 @@ struct ProfileModeFragment: View {
 					})
 					.padding(.horizontal, 20)
 					.padding(.vertical, 10)
-					.background(Color.orangeMain500)
+					.background(Color.lightBlueMain500)
 					.cornerRadius(60)
 					.padding(.horizontal)
 					.padding(.bottom, geometry.safeAreaInsets.bottom.isEqual(to: 0.0) ? 20 : 0)

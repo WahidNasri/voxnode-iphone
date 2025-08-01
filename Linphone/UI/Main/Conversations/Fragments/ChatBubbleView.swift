@@ -208,7 +208,7 @@ struct ChatBubbleView: View {
 																		.default_text_style_800(styleSize: 18)
 																		.lineLimit(1)
 																		.frame(width: 30, height: 30, alignment: .center)
-																		.background(Color.orangeMain500)
+																		.background(Color.lightBlueMain500)
 																		.clipShape(Circle())
 																	
 																}
@@ -282,7 +282,7 @@ struct ChatBubbleView: View {
 																	})
 																	.padding(.horizontal, 15)
 																	.padding(.vertical, 10)
-																	.background(Color.orangeMain500)
+																	.background(Color.lightBlueMain500)
 																	.cornerRadius(60)
 																}
 																.padding(.top, !eventLogMessage.message.messageConferenceInfo!.meetingDescription.isEmpty ? 10 : 0)
@@ -337,14 +337,14 @@ struct ChatBubbleView: View {
 														if eventLogMessage.message.status == .sending {
 															ProgressView()
 																.controlSize(.mini)
-																.progressViewStyle(CircularProgressViewStyle(tint: .orangeMain500))
+																.progressViewStyle(CircularProgressViewStyle(tint: .lightBlueMain500))
 																.frame(width: 10, height: 10)
 																.padding(.top, 1)
 														} else if eventLogMessage.message.status != nil {
 															Image(conversationViewModel.getImageIMDN(status: eventLogMessage.message.status!))
 																.renderingMode(.template)
 																.resizable()
-																.foregroundStyle(Color.orangeMain500)
+																.foregroundStyle(Color.lightBlueMain500)
 																.frame(width: 15, height: 15)
 																.padding(.top, 1)
 														}
@@ -381,7 +381,7 @@ struct ChatBubbleView: View {
 												.padding(.top, -4)
 											}
 											.padding(.all, 15)
-											.background(eventLogMessage.message.isOutgoing ? Color.orangeMain100 : Color.grayMain2c100)
+											.background(eventLogMessage.message.isOutgoing ? Color.lightBlueMain100 : Color.grayMain2c100)
 											.clipShape(RoundedRectangle(cornerRadius: 3))
 											.roundedCorner(
 												16,
@@ -411,7 +411,7 @@ struct ChatBubbleView: View {
 												.disabled(conversationViewModel.selectedMessage != nil)
 												.padding(.vertical, 6)
 												.padding(.horizontal, 10)
-												.background(eventLogMessage.message.isOutgoing ? Color.orangeMain100 : Color.grayMain2c100)
+												.background(eventLogMessage.message.isOutgoing ? Color.lightBlueMain100 : Color.grayMain2c100)
 												.cornerRadius(20)
 												.overlay(
 													RoundedRectangle(cornerRadius: 20)
@@ -960,7 +960,7 @@ struct CustomSlider: View {
 	@State private var timer: Timer?
 	
 	var minTrackColor: Color = .white.opacity(0.5)
-	var maxTrackGradient: Gradient = Gradient(colors: [Color.orangeMain300, Color.orangeMain500])
+	var maxTrackGradient: Gradient = Gradient(colors: [Color.lightBlueMain300, Color.lightBlueMain500])
 	
 	var body: some View {
 		GeometryReader { geometry in
@@ -994,7 +994,7 @@ struct CustomSlider: View {
 							Image(isPlaying ? "pause-fill" : "play-fill")
 								.renderingMode(.template)
 								.resizable()
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 								.frame(width: 20, height: 20)
 						}
 					)
@@ -1076,14 +1076,14 @@ struct CircularProgressView: View {
 			Circle()
 				.trim(from: 0, to: progress)
 				.stroke(
-					Color.orangeMain500,
+					Color.lightBlueMain500,
 					style: StrokeStyle(lineWidth: 5, lineCap: .round))
 				.rotationEffect(Angle(degrees: -90))
 				.animation(.easeInOut(duration: 0.5), value: progress)
 				.overlay(
 					Text("\(Int(progress * 100))%")
 						.font(.system(size: 15, weight: .bold, design: .rounded))
-						.foregroundColor(Color.orangeMain500)
+						.foregroundColor(Color.lightBlueMain500)
 				)
 		}
 		.padding()

@@ -184,7 +184,7 @@ struct ConversationFragment: View {
 			VStack(spacing: 1) {
 				if conversationViewModel.displayedConversation != nil {
 					Rectangle()
-						.foregroundColor(Color.orangeMain500)
+						.foregroundColor(Color.lightBlueMain500)
 						.edgesIgnoringSafeArea(.top)
 						.frame(height: 0)
 					
@@ -194,7 +194,7 @@ struct ConversationFragment: View {
 							Image("caret-left")
 								.renderingMode(.template)
 								.resizable()
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 								.frame(width: 25, height: 25, alignment: .leading)
 								.padding(.all, 10)
 								.padding(.top, 4)
@@ -225,7 +225,7 @@ struct ConversationFragment: View {
 										Image("bell-slash")
 											.renderingMode(.template)
 											.resizable()
-											.foregroundStyle(Color.orangeMain500)
+											.foregroundStyle(Color.lightBlueMain500)
 											.frame(width: 16, height: 16, alignment: .trailing)
 									}
 									
@@ -233,7 +233,7 @@ struct ConversationFragment: View {
 										Image("clock-countdown")
 											.renderingMode(.template)
 											.resizable()
-											.foregroundStyle(Color.orangeMain500)
+											.foregroundStyle(Color.lightBlueMain500)
 											.frame(width: 16, height: 16, alignment: .trailing)
 										
 										Text(conversationViewModel.ephemeralTime)
@@ -427,7 +427,7 @@ struct ConversationFragment: View {
 												.renderingMode(.template)
 												.foregroundStyle(.white)
 												.padding()
-												.background(Color.orangeMain500)
+												.background(Color.lightBlueMain500)
 												.clipShape(Circle())
 												.shadow(color: .black.opacity(0.2), radius: 4)
 											
@@ -726,7 +726,7 @@ struct ConversationFragment: View {
 											Image("paper-plane-tilt")
 												.renderingMode(.template)
 												.resizable()
-												.foregroundStyle(Color.orangeMain500)
+												.foregroundStyle(Color.lightBlueMain500)
 												.frame(width: 28, height: 28, alignment: .leading)
 												.padding(.all, 6)
 												.padding(.top, 4)
@@ -1193,7 +1193,7 @@ struct VoiceRecorderPlayer: View {
 	@State private var timer: Timer?
 	
 	var minTrackColor: Color = .white.opacity(0.5)
-	var maxTrackGradient: Gradient = Gradient(colors: [Color.orangeMain300, Color.orangeMain500])
+	var maxTrackGradient: Gradient = Gradient(colors: [Color.lightBlueMain300, Color.lightBlueMain500])
 	
 	var body: some View {
 		GeometryReader { geometry in
@@ -1208,7 +1208,7 @@ struct VoiceRecorderPlayer: View {
 						Image("x")
 							.renderingMode(.template)
 							.resizable()
-							.foregroundStyle(Color.orangeMain500)
+							.foregroundStyle(Color.lightBlueMain500)
 							.frame(width: 25, height: 25)
 					}
 				)
@@ -1255,7 +1255,7 @@ struct VoiceRecorderPlayer: View {
 								Image(isRecording ? "stop-fill" : (isPlaying ? "pause-fill" : "play-fill"))
 									.renderingMode(.template)
 									.resizable()
-									.foregroundStyle(Color.orangeMain500)
+									.foregroundStyle(Color.lightBlueMain500)
 									.frame(width: 20, height: 20)
 							}
 						)
@@ -1270,7 +1270,7 @@ struct VoiceRecorderPlayer: View {
 								Image("record-fill")
 								 .renderingMode(.template)
 								 .resizable()
-								 .foregroundStyle(isRecording ? Color.redDanger500 : Color.orangeMain500)
+								 .foregroundStyle(isRecording ? Color.redDanger500 : Color.lightBlueMain500)
 								 .frame(width: 18, height: 18)
 							}
 							
@@ -1296,7 +1296,7 @@ struct VoiceRecorderPlayer: View {
 					Image("paper-plane-tilt")
 						.renderingMode(.template)
 						.resizable()
-						.foregroundStyle(Color.orangeMain500)
+						.foregroundStyle(Color.lightBlueMain500)
 						.frame(width: 28, height: 28, alignment: .leading)
 						.padding(.all, 6)
 						.padding(.top, 4)

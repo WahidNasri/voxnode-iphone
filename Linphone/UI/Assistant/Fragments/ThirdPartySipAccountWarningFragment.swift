@@ -119,7 +119,7 @@ struct ThirdPartySipAccountWarningFragment: View {
 					
 					HStack {
 						Text("[linphone.org/contact](https://linphone.org/contact)")
-							.tint(Color.orangeMain500)
+							.tint(Color.lightBlueMain500)
 							.default_text_style_orange_600(styleSize: 15)
 							.frame(height: 35)
 					}
@@ -128,7 +128,7 @@ struct ThirdPartySipAccountWarningFragment: View {
 					.overlay(
 						RoundedRectangle(cornerRadius: 60)
 							.inset(by: 0.5)
-							.stroke(Color.orangeMain500, lineWidth: 1)
+							.stroke(Color.lightBlueMain500, lineWidth: 1)
 					)
 					
 					Spacer()
@@ -154,7 +154,7 @@ struct ThirdPartySipAccountWarningFragment: View {
 			.overlay(
 				RoundedRectangle(cornerRadius: 60)
 					.inset(by: 0.5)
-					.stroke(Color.orangeMain500, lineWidth: 1)
+					.stroke(Color.lightBlueMain500, lineWidth: 1)
 			)
 			.frame(maxWidth: sharedMainViewModel.maxWidth)
 			.padding(.horizontal)
@@ -170,7 +170,7 @@ struct ThirdPartySipAccountWarningFragment: View {
 			})
 			.padding(.horizontal, 20)
 			.padding(.vertical, 10)
-			.background(Color.orangeMain500)
+			.background(Color.lightBlueMain500)
 			.cornerRadius(60)
 			.frame(maxWidth: sharedMainViewModel.maxWidth)
 			.padding(.horizontal)

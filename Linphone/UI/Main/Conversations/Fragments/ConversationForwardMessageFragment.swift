@@ -43,7 +43,7 @@ struct ConversationForwardMessageFragment: View {
 				VStack(spacing: 1) {
 					
 					Rectangle()
-						.foregroundStyle(Color.orangeMain500)
+						.foregroundStyle(Color.lightBlueMain500)
 						.edgesIgnoringSafeArea(.top)
 						.frame(height: 0)
 					
@@ -51,7 +51,7 @@ struct ConversationForwardMessageFragment: View {
 						Image("caret-left")
 							.renderingMode(.template)
 							.resizable()
-							.foregroundStyle(Color.orangeMain500)
+							.foregroundStyle(Color.lightBlueMain500)
 							.frame(width: 25, height: 25, alignment: .leading)
 							.padding(.all, 10)
 							.padding(.top, 2)
@@ -135,7 +135,7 @@ struct ConversationForwardMessageFragment: View {
 						.overlay(
 							RoundedRectangle(cornerRadius: 60)
 								.inset(by: 0.5)
-								.stroke(isSearchFieldFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+								.stroke(isSearchFieldFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 						)
 						.padding(.vertical)
 						.padding(.horizontal)
@@ -293,7 +293,7 @@ struct ConversationForwardMessageFragment: View {
 							Text(contactsManager.lastSearchSuggestions[index].address?.displayName ?? "")
 								.default_text_style(styleSize: 16)
 								.frame(maxWidth: .infinity, alignment: .leading)
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 						} else if contactsManager.lastSearchSuggestions[index].address!.username != nil {
 							Image(uiImage: contactsManager.textToImage(
 								firstName: contactsManager.lastSearchSuggestions[index].address!.username!,
@@ -305,7 +305,7 @@ struct ConversationForwardMessageFragment: View {
 							Text(contactsManager.lastSearchSuggestions[index].address!.username ?? "")
 								.default_text_style(styleSize: 16)
 								.frame(maxWidth: .infinity, alignment: .leading)
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 						} else {
 							Image(uiImage: contactsManager.textToImage(
 								firstName: String(contactsManager.lastSearchSuggestions[index].address!.asStringUriOnly().dropFirst(4)),
@@ -317,7 +317,7 @@ struct ConversationForwardMessageFragment: View {
 							Text(String(contactsManager.lastSearchSuggestions[index].address!.asStringUriOnly().dropFirst(4)))
 								.default_text_style(styleSize: 16)
 								.frame(maxWidth: .infinity, alignment: .leading)
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 						}
 					} else {
 						Image("profil-picture-default")
@@ -328,7 +328,7 @@ struct ConversationForwardMessageFragment: View {
 						Text("username_error")
 							.default_text_style(styleSize: 16)
 							.frame(maxWidth: .infinity, alignment: .leading)
-							.foregroundStyle(Color.orangeMain500)
+							.foregroundStyle(Color.lightBlueMain500)
 					}
 				}
 				.padding(.horizontal)

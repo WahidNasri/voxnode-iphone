@@ -148,7 +148,7 @@ struct ContentView: View {
 												Image("address-book")
 													.renderingMode(.template)
 													.resizable()
-													.foregroundStyle(self.index == 0 ? Color.orangeMain500 : Color.grayMain2c600)
+													.foregroundStyle(self.index == 0 ? Color.lightBlueMain500 : Color.grayMain2c600)
 													.frame(width: 25, height: 25)
 												if self.index == 0 {
 													Text("bottom_navigation_contacts_label")
@@ -196,7 +196,7 @@ struct ContentView: View {
 													Image("phone")
 														.renderingMode(.template)
 														.resizable()
-														.foregroundStyle(self.index == 1 ? Color.orangeMain500 : Color.grayMain2c600)
+														.foregroundStyle(self.index == 1 ? Color.lightBlueMain500 : Color.grayMain2c600)
 														.frame(width: 25, height: 25)
 													if self.index == 1 {
 														Text("bottom_navigation_calls_label")
@@ -242,7 +242,7 @@ struct ContentView: View {
 													Image("chat-teardrop-text")
 														.renderingMode(.template)
 														.resizable()
-														.foregroundStyle(self.index == 2 ? Color.orangeMain500 : Color.grayMain2c600)
+														.foregroundStyle(self.index == 2 ? Color.lightBlueMain500 : Color.grayMain2c600)
 														.frame(width: 25, height: 25)
 													
 													if self.index == 2 {
@@ -268,7 +268,7 @@ struct ContentView: View {
 												Image("video-conference")
 													.renderingMode(.template)
 													.resizable()
-													.foregroundStyle(self.index == 3 ? Color.orangeMain500 : Color.grayMain2c600)
+													.foregroundStyle(self.index == 3 ? Color.lightBlueMain500 : Color.grayMain2c600)
 													.frame(width: 25, height: 25)
 												if self.index == 0 {
 													Text("bottom_navigation_meetings_label")
@@ -294,7 +294,7 @@ struct ContentView: View {
 							
 							VStack(spacing: 0) {
 								Rectangle()
-									.foregroundColor(Color.orangeMain500)
+									.foregroundColor(Color.lightBlueMain500)
 									.edgesIgnoringSafeArea(.top)
 									.frame(height: 1)
 								
@@ -306,7 +306,7 @@ struct ContentView: View {
 												 || orientation == .landscapeRight
 												 || UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height)
 												? Color.white
-												: Color.orangeMain500
+												: Color.lightBlueMain500
 											)
 											.frame(height: 100)
 										
@@ -477,7 +477,7 @@ struct ContentView: View {
 											.padding(.leading)
 											.padding(.top, 2.5)
 											.padding(.bottom, 2.5)
-											.background(Color.orangeMain500)
+											.background(Color.lightBlueMain500)
 											.roundedCorner(10, corners: [.bottomRight, .bottomLeft])
 										} else {
 											HStack {
@@ -609,7 +609,7 @@ struct ContentView: View {
 											.frame(height: 50)
 											.padding(.horizontal)
 											.padding(.bottom, 5)
-											.background(Color.orangeMain500)
+											.background(Color.lightBlueMain500)
 											.roundedCorner(10, corners: [.bottomRight, .bottomLeft])
 										}
 										
@@ -724,7 +724,7 @@ struct ContentView: View {
 											Image("address-book")
 												.renderingMode(.template)
 												.resizable()
-												.foregroundStyle(self.index == 0 ? Color.orangeMain500 : Color.grayMain2c600)
+												.foregroundStyle(self.index == 0 ? Color.lightBlueMain500 : Color.grayMain2c600)
 												.frame(width: 25, height: 25)
 											if self.index == 0 {
 												Text("bottom_navigation_contacts_label")
@@ -774,7 +774,7 @@ struct ContentView: View {
 												Image("phone")
 													.renderingMode(.template)
 													.resizable()
-													.foregroundStyle(self.index == 1 ? Color.orangeMain500 : Color.grayMain2c600)
+													.foregroundStyle(self.index == 1 ? Color.lightBlueMain500 : Color.grayMain2c600)
 													.frame(width: 25, height: 25)
 												if self.index == 1 {
 													Text("bottom_navigation_calls_label")
@@ -822,7 +822,7 @@ struct ContentView: View {
 												Image("chat-teardrop-text")
 													.renderingMode(.template)
 													.resizable()
-													.foregroundStyle(self.index == 2 ? Color.orangeMain500 : Color.grayMain2c600)
+													.foregroundStyle(self.index == 2 ? Color.lightBlueMain500 : Color.grayMain2c600)
 													.frame(width: 25, height: 25)
 												
 												if self.index == 2 {
@@ -849,7 +849,7 @@ struct ContentView: View {
 											Image("video-conference")
 												.renderingMode(.template)
 												.resizable()
-												.foregroundStyle(self.index == 3 ? Color.orangeMain500 : Color.grayMain2c600)
+												.foregroundStyle(self.index == 3 ? Color.lightBlueMain500 : Color.grayMain2c600)
 												.frame(width: 25, height: 25)
 											if self.index == 3 {
 												Text("bottom_navigation_meetings_label")

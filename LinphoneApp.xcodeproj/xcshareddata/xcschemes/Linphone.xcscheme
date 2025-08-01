@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D719ABB22ABC67BF00B41C10"
-               BuildableName = "LinphoneApp.app"
-               BlueprintName = "LinphoneApp"
+               BuildableName = "VoxNode.app"
+               BlueprintName = "VoxNode"
                ReferencedContainer = "container:LinphoneApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,8 +44,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D719ABB22ABC67BF00B41C10"
-            BuildableName = "LinphoneApp.app"
-            BlueprintName = "LinphoneApp"
+            BuildableName = "VoxNode.app"
+            BlueprintName = "VoxNode"
             ReferencedContainer = "container:LinphoneApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -61,8 +61,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D719ABB22ABC67BF00B41C10"
-            BuildableName = "LinphoneApp.app"
-            BlueprintName = "LinphoneApp"
+            BuildableName = "VoxNode.app"
+            BlueprintName = "VoxNode"
             ReferencedContainer = "container:LinphoneApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

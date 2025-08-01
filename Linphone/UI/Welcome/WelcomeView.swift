@@ -119,7 +119,7 @@ struct WelcomeView: View {
 				})
 				.padding(.horizontal, 20)
 				.padding(.vertical, 10)
-				.background(Color.orangeMain500)
+				.background(Color.lightBlueMain500)
 				.cornerRadius(60)
 				.padding(.horizontal)
 				.padding(.bottom, geometry.safeAreaInsets.bottom.isEqual(to: 0.0) ? 20 : 0)
@@ -137,7 +137,7 @@ struct WelcomeView: View {
 				})
 				.padding(.horizontal, 20)
 				.padding(.vertical, 10)
-				.background(Color.orangeMain500)
+				.background(Color.lightBlueMain500)
 				.cornerRadius(60)
 				.padding(.horizontal)
 				.padding(.bottom, geometry.safeAreaInsets.bottom.isEqual(to: 0.0) ? 20 : 0)
@@ -154,7 +154,7 @@ struct WelcomeView: View {
 	}
 	
 	func setupAppearance() {
-		UIPageControl.appearance().currentPageIndicatorTintColor = UIColor(Color.orangeMain500)
+		UIPageControl.appearance().currentPageIndicatorTintColor = UIColor(Color.lightBlueMain500)
 		if #available(iOS 16.0, *) {
 			
 			let dotCurrentImage = UIImage(named: "current-dot")

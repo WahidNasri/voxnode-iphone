@@ -32,7 +32,7 @@ struct PopupViewWithTextField: View {
 					.overlay(
 						RoundedRectangle(cornerRadius: 60)
 							.inset(by: 0.5)
-							.stroke(isMessageTextFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+							.stroke(isMessageTextFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 					)
 					.padding(.bottom)
 					.focused($isMessageTextFocused)
@@ -51,7 +51,7 @@ struct PopupViewWithTextField: View {
 				.overlay(
 					RoundedRectangle(cornerRadius: 60)
 						.inset(by: 0.5)
-						.stroke(Color.orangeMain500, lineWidth: 1)
+						.stroke(Color.lightBlueMain500, lineWidth: 1)
 				)
 				.padding(.bottom, 10)
 				
@@ -65,7 +65,7 @@ struct PopupViewWithTextField: View {
 				})
 				.padding(.horizontal, 20)
 				.padding(.vertical, 10)
-				.background(conversationViewModel.conversationInfoPopupText.isEmpty ? Color.orangeMain100 : Color.orangeMain500)
+				.background(conversationViewModel.conversationInfoPopupText.isEmpty ? Color.lightBlueMain100 : Color.lightBlueMain500)
 				.cornerRadius(60)
 				.disabled(conversationViewModel.conversationInfoPopupText.isEmpty)
 			}
@@ -75,7 +75,7 @@ struct PopupViewWithTextField: View {
 			.cornerRadius(20)
 			.padding(.horizontal)
 			.frame(maxHeight: .infinity)
-			.shadow(color: Color.orangeMain500, radius: 0, x: 0, y: 2)
+			.shadow(color: Color.lightBlueMain500, radius: 0, x: 0, y: 2)
 			.frame(maxWidth: sharedMainViewModel.maxWidth)
 			.position(x: geometry.size.width / 2, y: geometry.size.height / 2)
 		}

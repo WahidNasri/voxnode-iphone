@@ -27,7 +27,7 @@ struct SplashScreen: View {
 				Spacer()
 				HStack {
 					Spacer()
-					Image("linphone")
+					Image("voipphone")
 					Spacer()
 				}
 				Spacer()

@@ -155,7 +155,7 @@ struct LoginFragment: View {
 					.overlay(
 						RoundedRectangle(cornerRadius: 60)
 							.inset(by: 0.5)
-							.stroke(isNameFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+							.stroke(isNameFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 					)
 					.padding(.bottom)
 					.focused($isNameFocused)
@@ -198,7 +198,7 @@ struct LoginFragment: View {
 				.overlay(
 					RoundedRectangle(cornerRadius: 60)
 						.inset(by: 0.5)
-						.stroke(isPasswordFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+						.stroke(isPasswordFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 				)
 				.padding(.bottom)
 				
@@ -214,7 +214,7 @@ struct LoginFragment: View {
 				})
 				.padding(.horizontal, 20)
 				.padding(.vertical, 10)
-				.background((accountLoginViewModel.username.isEmpty || accountLoginViewModel.passwd.isEmpty) ? Color.orangeMain100 : Color.orangeMain500)
+				.background((accountLoginViewModel.username.isEmpty || accountLoginViewModel.passwd.isEmpty) ? Color.lightBlueMain100 : Color.lightBlueMain500)
 				.cornerRadius(60)
 				.disabled(accountLoginViewModel.username.isEmpty || accountLoginViewModel.passwd.isEmpty)
 				.padding(.bottom)
@@ -249,7 +249,7 @@ struct LoginFragment: View {
 						Image("qr-code")
 							.renderingMode(.template)
 							.resizable()
-							.foregroundStyle(Color.orangeMain500)
+							.foregroundStyle(Color.lightBlueMain500)
 							.frame(width: 20, height: 20)
 						
 						Text("assistant_scan_qr_code")
@@ -265,7 +265,7 @@ struct LoginFragment: View {
 				.overlay(
 					RoundedRectangle(cornerRadius: 60)
 						.inset(by: 0.5)
-						.stroke(Color.orangeMain500, lineWidth: 1)
+						.stroke(Color.lightBlueMain500, lineWidth: 1)
 				)
 				.padding(.bottom)
 				
@@ -285,7 +285,7 @@ struct LoginFragment: View {
 				.overlay(
 					RoundedRectangle(cornerRadius: 60)
 						.inset(by: 0.5)
-						.stroke(Color.orangeMain500, lineWidth: 1)
+						.stroke(Color.lightBlueMain500, lineWidth: 1)
 				)
 				.padding(.bottom)
 				.simultaneousGesture(
@@ -322,7 +322,7 @@ struct LoginFragment: View {
 				.disabled(!sharedMainViewModel.generalTermsAccepted)
 				.padding(.horizontal, 20)
 				.padding(.vertical, 10)
-				.background(Color.orangeMain500)
+				.background(Color.lightBlueMain500)
 				.cornerRadius(60)
 				.padding(.horizontal, 10)
 				.simultaneousGesture(

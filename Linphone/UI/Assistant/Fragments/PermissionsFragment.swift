@@ -178,7 +178,7 @@ struct PermissionsFragment: View {
 			.overlay(
 				RoundedRectangle(cornerRadius: 60)
 					.inset(by: 0.5)
-					.stroke(Color.orangeMain500, lineWidth: 1)
+					.stroke(Color.lightBlueMain500, lineWidth: 1)
 			)
 			.frame(maxWidth: sharedMainViewModel.maxWidth)
 			.padding(.horizontal)
@@ -193,7 +193,7 @@ struct PermissionsFragment: View {
 			}
 			.padding(.horizontal, 20)
 			.padding(.vertical, 10)
-			.background(Color.orangeMain500)
+			.background(Color.lightBlueMain500)
 			.cornerRadius(60)
 			.frame(maxWidth: sharedMainViewModel.maxWidth)
 			.padding(.horizontal)

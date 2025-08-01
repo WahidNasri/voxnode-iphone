@@ -52,7 +52,7 @@ struct AccountSettingsFragment: View {
 		ZStack {
 			VStack(spacing: 1) {
 				Rectangle()
-					.foregroundColor(Color.orangeMain500)
+					.foregroundColor(Color.lightBlueMain500)
 					.edgesIgnoringSafeArea(.top)
 					.frame(height: 0)
 				
@@ -60,7 +60,7 @@ struct AccountSettingsFragment: View {
 					Image("caret-left")
 						.renderingMode(.template)
 						.resizable()
-						.foregroundStyle(Color.orangeMain500)
+						.foregroundStyle(Color.lightBlueMain500)
 						.frame(width: 25, height: 25, alignment: .leading)
 						.padding(.all, 10)
 						.padding(.top, 4)
@@ -110,7 +110,7 @@ struct AccountSettingsFragment: View {
 											.overlay(
 												RoundedRectangle(cornerRadius: 60)
 													.inset(by: 0.5)
-													.stroke(isVoicemailUriFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+													.stroke(isVoicemailUriFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 											)
 											.focused($isVoicemailUriFocused)
 									}
@@ -130,7 +130,7 @@ struct AccountSettingsFragment: View {
 											.overlay(
 												RoundedRectangle(cornerRadius: 60)
 													.inset(by: 0.5)
-													.stroke(isMwiUriFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+													.stroke(isMwiUriFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 											)
 											.focused($isMwiUriFocused)
 									}
@@ -187,7 +187,7 @@ struct AccountSettingsFragment: View {
 													.overlay(
 														RoundedRectangle(cornerRadius: 60)
 															.inset(by: 0.5)
-															.stroke(isStunServerUriFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+															.stroke(isStunServerUriFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 													)
 													.focused($isStunServerUriFocused)
 											}
@@ -213,7 +213,7 @@ struct AccountSettingsFragment: View {
 													.overlay(
 														RoundedRectangle(cornerRadius: 60)
 															.inset(by: 0.5)
-															.stroke(isTurnUsernameFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+															.stroke(isTurnUsernameFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 													)
 													.focused($isTurnUsernameFocused)
 											}
@@ -256,7 +256,7 @@ struct AccountSettingsFragment: View {
 												.overlay(
 													RoundedRectangle(cornerRadius: 60)
 														.inset(by: 0.5)
-														.stroke(isTurnPasswordFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+														.stroke(isTurnPasswordFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 												)
 												.padding(.bottom)
 											}
@@ -345,7 +345,7 @@ struct AccountSettingsFragment: View {
 													.overlay(
 														RoundedRectangle(cornerRadius: 60)
 															.inset(by: 0.5)
-															.stroke(isSipProxyUrlFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+															.stroke(isSipProxyUrlFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 													)
 													.focused($isSipProxyUrlFocused)
 											}
@@ -377,7 +377,7 @@ struct AccountSettingsFragment: View {
 													.overlay(
 														RoundedRectangle(cornerRadius: 60)
 															.inset(by: 0.5)
-															.stroke(isSettingsExpireFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+															.stroke(isSettingsExpireFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 													)
 													.focused($isSettingsExpireFocused)
 											}
@@ -397,7 +397,7 @@ struct AccountSettingsFragment: View {
 													.overlay(
 														RoundedRectangle(cornerRadius: 60)
 															.inset(by: 0.5)
-															.stroke(isConferenceFactoryUriFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+															.stroke(isConferenceFactoryUriFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 													)
 													.focused($isConferenceFactoryUriFocused)
 											}
@@ -417,7 +417,7 @@ struct AccountSettingsFragment: View {
 													.overlay(
 														RoundedRectangle(cornerRadius: 60)
 															.inset(by: 0.5)
-															.stroke(isAudioVideoConferenceFactoryUriFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+															.stroke(isAudioVideoConferenceFactoryUriFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 													)
 													.focused($isAudioVideoConferenceFactoryUriFocused)
 											}
@@ -437,7 +437,7 @@ struct AccountSettingsFragment: View {
 													.overlay(
 														RoundedRectangle(cornerRadius: 60)
 															.inset(by: 0.5)
-															.stroke(isCcmpServerUrlFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+															.stroke(isCcmpServerUrlFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 													)
 													.focused($isCcmpServerUrlFocused)
 											}
@@ -457,7 +457,7 @@ struct AccountSettingsFragment: View {
 													.overlay(
 														RoundedRectangle(cornerRadius: 60)
 															.inset(by: 0.5)
-															.stroke(isLimeServerUrlFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+															.stroke(isLimeServerUrlFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 													)
 													.focused($isLimeServerUrlFocused)
 											}

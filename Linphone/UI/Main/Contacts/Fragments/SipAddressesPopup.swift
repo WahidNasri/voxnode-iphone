@@ -96,7 +96,7 @@ struct SipAddressesPopup: View {
 			.background(.white)
 			.cornerRadius(20)
 			.frame(maxHeight: .infinity)
-			.shadow(color: Color.orangeMain500, radius: 0, x: 0, y: 2)
+			.shadow(color: Color.lightBlueMain500, radius: 0, x: 0, y: 2)
 			.frame(maxWidth: sharedMainViewModel.maxWidth)
 			.position(x: geometry.size.width / 2, y: geometry.size.height / 2)
 		}

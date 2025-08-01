@@ -4,6 +4,9 @@
     "" : {
 
     },
+    " PHONE" : {
+
+    },
     ": %@" : {
 
     },
@@ -12,6 +15,9 @@
     },
     "[linphone.org/contact](https://linphone.org/contact)" : {
       "shouldTranslate" : false
+    },
+    "@" : {
+
     },
     "*" : {
 
@@ -3868,6 +3874,9 @@
     "DTLS" : {
 
     },
+    "Email" : {
+
+    },
     "Error" : {
       "localizations" : {
         "en" : {
@@ -4595,6 +4604,9 @@
           }
         }
       }
+    },
+    "Login" : {
+
     },
     "manage_account_add_picture" : {
       "localizations" : {
@@ -6103,6 +6115,9 @@
         }
       }
     },
+    "Password" : {
+
+    },
     "Personnalize your profil mode" : {
 
     },
@@ -7556,6 +7571,9 @@
           }
         }
       }
+    },
+    "VoIP" : {
+
     },
     "web_platform_forgotten_password_url" : {
       "extractionState" : "manual",

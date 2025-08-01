@@ -133,7 +133,7 @@ struct RegisterFragment: View {
 					.overlay(
 						RoundedRectangle(cornerRadius: 60)
 							.inset(by: 0.5)
-							.stroke(isNameFocused ? Color.orangeMain500 : (!registerViewModel.usernameError.isEmpty ? Color.redDanger500 : Color.gray200), lineWidth: 1)
+							.stroke(isNameFocused ? Color.lightBlueMain500 : (!registerViewModel.usernameError.isEmpty ? Color.redDanger500 : Color.gray200), lineWidth: 1)
 					)
 					.focused($isNameFocused)
 					.onChange(of: registerViewModel.username) { _ in
@@ -192,7 +192,7 @@ struct RegisterFragment: View {
 				.overlay(
 					RoundedRectangle(cornerRadius: 60)
 						.inset(by: 0.5)
-						.stroke(isPhoneNumberFocused ? Color.orangeMain500 : (!registerViewModel.phoneNumberError.isEmpty ? Color.redDanger500 : Color.gray200), lineWidth: 1)
+						.stroke(isPhoneNumberFocused ? Color.lightBlueMain500 : (!registerViewModel.phoneNumberError.isEmpty ? Color.redDanger500 : Color.gray200), lineWidth: 1)
 				)
 				.focused($isPhoneNumberFocused)
 				
@@ -248,7 +248,7 @@ struct RegisterFragment: View {
 				.overlay(
 					RoundedRectangle(cornerRadius: 60)
 						.inset(by: 0.5)
-						.stroke(isPasswordFocused ? Color.orangeMain500 : (!registerViewModel.passwordError.isEmpty ? Color.redDanger500 : Color.gray200), lineWidth: 1)
+						.stroke(isPasswordFocused ? Color.lightBlueMain500 : (!registerViewModel.passwordError.isEmpty ? Color.redDanger500 : Color.gray200), lineWidth: 1)
 				)
 				
 				Text(registerViewModel.passwordError)
@@ -267,7 +267,7 @@ struct RegisterFragment: View {
 				})
 				.padding(.horizontal, 20)
 				.padding(.vertical, 10)
-				.background((registerViewModel.username.isEmpty || registerViewModel.phoneNumber.isEmpty || registerViewModel.passwd.isEmpty) ? Color.orangeMain100 : Color.orangeMain500)
+				.background((registerViewModel.username.isEmpty || registerViewModel.phoneNumber.isEmpty || registerViewModel.passwd.isEmpty) ? Color.lightBlueMain100 : Color.lightBlueMain500)
 				.cornerRadius(60)
 				.disabled(!registerViewModel.isLinkActive)
 				.padding(.bottom)
@@ -302,7 +302,7 @@ struct RegisterFragment: View {
 				.overlay(
 					RoundedRectangle(cornerRadius: 60)
 						.inset(by: 0.5)
-						.stroke(Color.orangeMain500, lineWidth: 1)
+						.stroke(Color.lightBlueMain500, lineWidth: 1)
 				)
 				.padding(.bottom)
 				.frame(maxWidth: .infinity)
@@ -330,7 +330,7 @@ struct RegisterFragment: View {
 				})
 				.padding(.horizontal, 20)
 				.padding(.vertical, 10)
-				.background(Color.orangeMain500)
+				.background(Color.lightBlueMain500)
 				.cornerRadius(60)
 				.padding(.horizontal, 10)
 				

@@ -26,11 +26,12 @@ extension Color {
 	static let black = Color(hex: "#000000")
 	static let white = Color(hex: "#FFFFFF")
 	
-	static let orangeMain700 = Color(hex: "#B72D00")
-	static let orangeMain500 = Color(hex: "#FF5E00")
-	static let orangeMain300 = Color(hex: "#FFB266")
-	static let orangeMain100 = Color(hex: "#FFEACB")
-	static let orangeMain100Alpha50 = Color(hex: "#80FFEACB")
+	static let lightBlueMain700 = Color(hex: "#005B9C")
+	static let lightBlueMain500 = Color(hex: "#3399FF")
+	static let lightBlueMain300 = Color(hex: "#99CCFF")
+	static let lightBlueMain100 = Color(hex: "#E6F2FF")
+	static let lightBlueMain100Alpha50 = Color(hex: "#80E6F2FF")
+
 	
 	static let grayMain2c800 = Color(hex: "#22334D")
 	static let grayMain2c800Alpha65 = Color(hex: "#A622334D")

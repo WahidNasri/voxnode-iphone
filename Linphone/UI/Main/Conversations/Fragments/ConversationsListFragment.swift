@@ -155,7 +155,7 @@ struct ConversationRow: View {
 						Image("bell-slash")
 							.renderingMode(.template)
 							.resizable()
-							.foregroundStyle(Color.orangeMain500)
+							.foregroundStyle(Color.lightBlueMain500)
 							.frame(width: 18, height: 18, alignment: .trailing)
 					}
 					
@@ -165,7 +165,7 @@ struct ConversationRow: View {
 						Image(imageName)
 							.renderingMode(.template)
 							.resizable()
-							.foregroundStyle(Color.orangeMain500)
+							.foregroundStyle(Color.lightBlueMain500)
 							.frame(width: 18, height: 18, alignment: .trailing)
 					}
 					

@@ -54,7 +54,7 @@ struct StartConversationFragment: View {
 						Image("caret-left")
 							.renderingMode(.template)
 							.resizable()
-							.foregroundStyle(Color.orangeMain500)
+							.foregroundStyle(Color.lightBlueMain500)
 							.frame(width: 25, height: 25, alignment: .leading)
 							.padding(.all, 10)
 							.padding(.top, 2)
@@ -131,7 +131,7 @@ struct StartConversationFragment: View {
 						.overlay(
 							RoundedRectangle(cornerRadius: 60)
 								.inset(by: 0.5)
-								.stroke(isSearchFieldFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+								.stroke(isSearchFieldFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 						)
 						.padding(.vertical)
 						.padding(.horizontal)
@@ -148,7 +148,7 @@ struct StartConversationFragment: View {
 										.frame(width: 20, height: 20, alignment: .leading)
 								}
 								.padding(16)
-								.background(Color.orangeMain500)
+								.background(Color.lightBlueMain500)
 								.cornerRadius(40)
 								
 								Text("new_conversation_create_group")
@@ -251,7 +251,7 @@ struct StartConversationFragment: View {
 	
 	@Sendable private func delayColor() async {
 		try? await Task.sleep(nanoseconds: 250_000_000)
-		delayedColor = Color.orangeMain500
+		delayedColor = Color.lightBlueMain500
 	}
 	
 	func delayColorDismiss() {
@@ -282,7 +282,7 @@ struct StartConversationFragment: View {
 							Text(contactsManager.lastSearchSuggestions[index].address?.displayName ?? "")
 								.default_text_style(styleSize: 16)
 								.frame(maxWidth: .infinity, alignment: .leading)
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 						} else if contactsManager.lastSearchSuggestions[index].address!.username != nil {
 							Image(uiImage: contactsManager.textToImage(
 								firstName: contactsManager.lastSearchSuggestions[index].address!.username!,
@@ -294,7 +294,7 @@ struct StartConversationFragment: View {
 							Text(contactsManager.lastSearchSuggestions[index].address!.username ?? "")
 								.default_text_style(styleSize: 16)
 								.frame(maxWidth: .infinity, alignment: .leading)
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 						} else {
 							Image(uiImage: contactsManager.textToImage(
 								firstName: String(contactsManager.lastSearchSuggestions[index].address!.asStringUriOnly().dropFirst(4)),
@@ -306,7 +306,7 @@ struct StartConversationFragment: View {
 							Text(String(contactsManager.lastSearchSuggestions[index].address!.asStringUriOnly().dropFirst(4)))
 								.default_text_style(styleSize: 16)
 								.frame(maxWidth: .infinity, alignment: .leading)
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 						}
 					} else {
 						Image("profil-picture-default")
@@ -317,7 +317,7 @@ struct StartConversationFragment: View {
 						Text("username_error")
 							.default_text_style(styleSize: 16)
 							.frame(maxWidth: .infinity, alignment: .leading)
-							.foregroundStyle(Color.orangeMain500)
+							.foregroundStyle(Color.lightBlueMain500)
 					}
 				}
 				.padding(.horizontal)
@@ -344,7 +344,7 @@ struct StartConversationFragment: View {
 					.overlay(
 						RoundedRectangle(cornerRadius: 60)
 							.inset(by: 0.5)
-							.stroke(isMessageTextFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+							.stroke(isMessageTextFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 					)
 					.padding(.bottom)
 					.focused($isMessageTextFocused)
@@ -363,7 +363,7 @@ struct StartConversationFragment: View {
 				.overlay(
 					RoundedRectangle(cornerRadius: 60)
 						.inset(by: 0.5)
-						.stroke(Color.orangeMain500, lineWidth: 1)
+						.stroke(Color.lightBlueMain500, lineWidth: 1)
 				)
 				.padding(.bottom, 10)
 				
@@ -377,7 +377,7 @@ struct StartConversationFragment: View {
 				})
 				.padding(.horizontal, 20)
 				.padding(.vertical, 10)
-				.background(startConversationViewModel.messageText.isEmpty ? Color.orangeMain100 : Color.orangeMain500)
+				.background(startConversationViewModel.messageText.isEmpty ? Color.lightBlueMain100 : Color.lightBlueMain500)
 				.cornerRadius(60)
 				.disabled(startConversationViewModel.messageText.isEmpty)
 			}
@@ -387,7 +387,7 @@ struct StartConversationFragment: View {
 			.cornerRadius(20)
 			.padding(.horizontal)
 			.frame(maxHeight: .infinity)
-			.shadow(color: Color.orangeMain500, radius: 0, x: 0, y: 2)
+			.shadow(color: Color.lightBlueMain500, radius: 0, x: 0, y: 2)
 			.frame(maxWidth: sharedMainViewModel.maxWidth)
 			.position(x: geometry.size.width / 2, y: geometry.size.height / 2)
 			.onDisappear {

@@ -68,13 +68,13 @@ struct MeetingFragment: View {
 				VStack(spacing: 0) {
 					if #available(iOS 16.0, *) {
 						Rectangle()
-							.foregroundColor(Color.orangeMain500)
+							.foregroundColor(Color.lightBlueMain500)
 							.edgesIgnoringSafeArea(.top)
 							.frame(height: 0)
 					} else if idiom != .pad && !(orientation == .landscapeLeft || orientation == .landscapeRight
 												 || UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height) {
 						Rectangle()
-							.foregroundColor(Color.orangeMain500)
+							.foregroundColor(Color.lightBlueMain500)
 							.edgesIgnoringSafeArea(.top)
 							.frame(height: 1)
 					}
@@ -83,7 +83,7 @@ struct MeetingFragment: View {
 						Image("caret-left")
 							.renderingMode(.template)
 							.resizable()
-							.foregroundStyle(Color.orangeMain500)
+							.foregroundStyle(Color.lightBlueMain500)
 							.frame(width: 25, height: 25, alignment: .leading)
 							.padding(.all, 10)
 							.padding(.leading, -10)
@@ -97,7 +97,7 @@ struct MeetingFragment: View {
 							Image("pencil-simple")
 								.renderingMode(.template)
 								.resizable()
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 								.frame(width: 25, height: 25, alignment: .leading)
 								.padding(.trailing, 5)
 								.onTapGesture {
@@ -154,7 +154,7 @@ struct MeetingFragment: View {
 							Image("dots-three-vertical")
 								.renderingMode(.template)
 								.resizable()
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 								.frame(width: 25, height: 25, alignment: .leading)
 						}
 					}
@@ -306,7 +306,7 @@ struct MeetingFragment: View {
 						.default_text_style_white_500(styleSize: 16)
 						.frame(maxWidth: .infinity, maxHeight: 47, alignment: .center)
 						.frame(height: 47)
-						.background(Color.orangeMain500)
+						.background(Color.lightBlueMain500)
 						.clipShape(RoundedRectangle(cornerRadius: 48))
 						.padding(.leading, 15)
 						.padding(.trailing, 15)

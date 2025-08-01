@@ -155,7 +155,7 @@ struct RegisterCodeConfirmationFragment: View {
 					.overlay(
 						RoundedRectangle(cornerRadius: 60)
 							.inset(by: 0.5)
-							.stroke(Color.orangeMain500, lineWidth: 1)
+							.stroke(Color.lightBlueMain500, lineWidth: 1)
 					)
 					.padding(.bottom)
 					.frame(maxWidth: .infinity)
@@ -184,13 +184,13 @@ struct RegisterCodeConfirmationFragment: View {
 	private func otpText(text: String, focused: Bool) -> some View {
 		
 		return Text(text)
-			.foregroundStyle(isFocused && focused ? Color.orangeMain500 : Color.grayMain2c600)
+			.foregroundStyle(isFocused && focused ? Color.lightBlueMain500 : Color.grayMain2c600)
 			.default_text_style_600(styleSize: 40)
 			.frame(width: textBoxWidth, height: textBoxHeight)
 			.overlay(
 				RoundedRectangle(cornerRadius: 20)
 					.inset(by: 0.5)
-					.stroke(isFocused && focused ? Color.orangeMain500 : Color.grayMain2c600, lineWidth: 1)
+					.stroke(isFocused && focused ? Color.lightBlueMain500 : Color.grayMain2c600, lineWidth: 1)
 			)
 			.padding(paddingOfBox)
 	}

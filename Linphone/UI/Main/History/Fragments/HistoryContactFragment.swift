@@ -47,7 +47,7 @@ struct HistoryContactFragment: View {
 			if historyViewModel.displayedCall != nil {
 				VStack(spacing: 1) {
 					Rectangle()
-						.foregroundColor(Color.orangeMain500)
+						.foregroundColor(Color.lightBlueMain500)
 						.edgesIgnoringSafeArea(.top)
 						.frame(height: 0)
 					
@@ -57,7 +57,7 @@ struct HistoryContactFragment: View {
 							Image("caret-left")
 								.renderingMode(.template)
 								.resizable()
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 								.frame(width: 25, height: 25, alignment: .leading)
 								.padding(.all, 10)
 								.padding(.top, 2)
@@ -172,7 +172,7 @@ struct HistoryContactFragment: View {
 							Image("dots-three-vertical")
 								.renderingMode(.template)
 								.resizable()
-								.foregroundStyle(Color.orangeMain500)
+								.foregroundStyle(Color.lightBlueMain500)
 								.frame(width: 25, height: 25, alignment: .leading)
 								.padding(.all, 10)
 						}

@@ -66,7 +66,7 @@ struct PopupView: View {
 					.overlay(
 						RoundedRectangle(cornerRadius: 60)
 							.inset(by: 0.5)
-							.stroke(Color.orangeMain500, lineWidth: 1)
+							.stroke(Color.lightBlueMain500, lineWidth: 1)
 					)
 					.padding(.bottom, 10)
 				}
@@ -82,7 +82,7 @@ struct PopupView: View {
 					})
 					.padding(.horizontal, 20)
 					.padding(.vertical, 10)
-					.background(Color.orangeMain500)
+					.background(Color.lightBlueMain500)
 					.cornerRadius(60)
 				}
 			}
@@ -92,7 +92,7 @@ struct PopupView: View {
 			.cornerRadius(20)
 			.padding(.horizontal)
 			.frame(maxHeight: .infinity)
-			.shadow(color: Color.orangeMain500, radius: 0, x: 0, y: 2)
+			.shadow(color: Color.lightBlueMain500, radius: 0, x: 0, y: 2)
 			.frame(maxWidth: sharedMainViewModel.maxWidth)
 			.position(x: geometry.size.width / 2, y: geometry.size.height / 2)
 		}

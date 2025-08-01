@@ -45,7 +45,7 @@ struct ConversationsView: View {
 						.renderingMode(.template)
 						.foregroundStyle(.white)
 						.padding()
-						.background(Color.orangeMain500)
+						.background(Color.lightBlueMain500)
 						.clipShape(Circle())
 						.shadow(color: .black.opacity(0.2), radius: 4)
 					

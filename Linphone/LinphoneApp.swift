@@ -149,14 +149,7 @@ struct LinphoneApp: App {
 	var body: some Scene {
 		WindowGroup {
 			if coreContext.coreIsStarted {
-				if !sharedMainViewModel.welcomeViewDisplayed {
-					ZStack {
-						WelcomeView()
-
-						ToastView()
-							.zIndex(3)
-					}
-				} else if coreContext.accounts.isEmpty || sharedMainViewModel.displayProfileMode {
+                if coreContext.accounts.isEmpty || sharedMainViewModel.displayProfileMode {
 					ZStack {
 						AssistantView()
 						

@@ -28,11 +28,11 @@ struct AssistantView: View {
 		if sharedMainViewModel.displayProfileMode && coreContext.loggedIn {
 			ProfileModeFragment()
 		} else {
-			LoginFragment(accountLoginViewModel: AccountLoginViewModel())
+            VoxLoginView(accountViewModel: AccountLoginViewModel())
 		}
 	}
 }
 
 #Preview {
-	LoginFragment(accountLoginViewModel: AccountLoginViewModel())
+    VoxLoginView(accountViewModel: AccountLoginViewModel())
 }

@@ -70,13 +70,13 @@ struct EditContactFragment: View {
 				} else {
 					if #available(iOS 16.0, *) {
 						Rectangle()
-							.foregroundColor(Color.orangeMain500)
+							.foregroundColor(Color.lightBlueMain500)
 							.edgesIgnoringSafeArea(.top)
 							.frame(height: 0)
 					} else if idiom != .pad && !(orientation == .landscapeLeft || orientation == .landscapeRight
 												 || UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height) {
 						Rectangle()
-							.foregroundColor(Color.orangeMain500)
+							.foregroundColor(Color.lightBlueMain500)
 							.edgesIgnoringSafeArea(.top)
 							.frame(height: 1)
 					}
@@ -86,7 +86,7 @@ struct EditContactFragment: View {
 					Image("caret-left")
 						.renderingMode(.template)
 						.resizable()
-						.foregroundStyle(Color.orangeMain500)
+						.foregroundStyle(Color.lightBlueMain500)
 						.frame(width: 25, height: 25, alignment: .leading)
 						.padding(.all, 10)
 						.padding(.top, 2)
@@ -130,7 +130,7 @@ struct EditContactFragment: View {
 					Image("check")
 						.renderingMode(.template)
 						.resizable()
-						.foregroundStyle(editContactViewModel.firstName.isEmpty ? Color.orangeMain100 : Color.orangeMain500)
+						.foregroundStyle(editContactViewModel.firstName.isEmpty ? Color.lightBlueMain100 : Color.lightBlueMain500)
 						.frame(width: 25, height: 25, alignment: .leading)
 						.padding(.all, 10)
 						.padding(.top, 2)
@@ -288,7 +288,7 @@ struct EditContactFragment: View {
 									.overlay(
 										RoundedRectangle(cornerRadius: 60)
 											.inset(by: 0.5)
-											.stroke(isFirstNameFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+											.stroke(isFirstNameFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 									)
 									.padding(.bottom)
 									.focused($isFirstNameFocused)
@@ -309,7 +309,7 @@ struct EditContactFragment: View {
 									.overlay(
 										RoundedRectangle(cornerRadius: 60)
 											.inset(by: 0.5)
-											.stroke(isLastNameFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+											.stroke(isLastNameFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 									)
 									.padding(.bottom)
 									.focused($isLastNameFocused)
@@ -335,7 +335,7 @@ struct EditContactFragment: View {
 											.overlay(
 												RoundedRectangle(cornerRadius: 60)
 													.inset(by: 0.5)
-													.stroke(isSIPAddressFocused == index ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+													.stroke(isSIPAddressFocused == index ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 											)
 											.focused($isSIPAddressFocused, equals: index)
 											.onChange(of: editContactViewModel.sipAddresses[index]) { newValue in
@@ -384,7 +384,7 @@ struct EditContactFragment: View {
 											.overlay(
 												RoundedRectangle(cornerRadius: 60)
 													.inset(by: 0.5)
-													.stroke(isPhoneNumberFocused == index ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+													.stroke(isPhoneNumberFocused == index ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 											)
 											.focused($isPhoneNumberFocused, equals: index)
 											.onChange(of: editContactViewModel.phoneNumbers[index]) { newValue in
@@ -433,7 +433,7 @@ struct EditContactFragment: View {
 									.overlay(
 										RoundedRectangle(cornerRadius: 60)
 											.inset(by: 0.5)
-											.stroke(isCompanyFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+											.stroke(isCompanyFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 									)
 									.padding(.bottom)
 									.focused($isCompanyFocused)
@@ -454,7 +454,7 @@ struct EditContactFragment: View {
 									.overlay(
 										RoundedRectangle(cornerRadius: 60)
 											.inset(by: 0.5)
-											.stroke(isJobTitleFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+											.stroke(isJobTitleFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 									)
 									.padding(.bottom)
 									.focused($isJobTitleFocused)
@@ -487,7 +487,7 @@ struct EditContactFragment: View {
 	
 	@Sendable private func delayColor() async {
 		try? await Task.sleep(nanoseconds: 250_000_000)
-		delayedColor = Color.orangeMain500
+		delayedColor = Color.lightBlueMain500
 	}
 	
 	func delayColorDismiss() {

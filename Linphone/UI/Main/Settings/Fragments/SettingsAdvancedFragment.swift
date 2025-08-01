@@ -37,7 +37,7 @@ struct SettingsAdvancedFragment: View {
 		ZStack {
 			VStack(spacing: 1) {
 				Rectangle()
-					.foregroundColor(Color.orangeMain500)
+					.foregroundColor(Color.lightBlueMain500)
 					.edgesIgnoringSafeArea(.top)
 					.frame(height: 0)
 				
@@ -45,7 +45,7 @@ struct SettingsAdvancedFragment: View {
 					Image("caret-left")
 						.renderingMode(.template)
 						.resizable()
-						.foregroundStyle(Color.orangeMain500)
+						.foregroundStyle(Color.lightBlueMain500)
 						.frame(width: 25, height: 25, alignment: .leading)
 						.padding(.all, 10)
 						.padding(.top, 4)
@@ -128,7 +128,7 @@ struct SettingsAdvancedFragment: View {
 									.overlay(
 										RoundedRectangle(cornerRadius: 60)
 											.inset(by: 0.5)
-											.stroke(isDeviceIdFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+											.stroke(isDeviceIdFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 									)
 									.focused($isDeviceIdFocused)
 							}
@@ -147,7 +147,7 @@ struct SettingsAdvancedFragment: View {
 									.overlay(
 										RoundedRectangle(cornerRadius: 60)
 											.inset(by: 0.5)
-											.stroke(isUploadServerUrlFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+											.stroke(isUploadServerUrlFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 									)
 									.focused($isUploadServerUrlFocused)
 							}
@@ -166,7 +166,7 @@ struct SettingsAdvancedFragment: View {
 									.overlay(
 										RoundedRectangle(cornerRadius: 60)
 											.inset(by: 0.5)
-											.stroke(isRemoteProvisioningUrlFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+											.stroke(isRemoteProvisioningUrlFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 									)
 									.focused($isRemoteProvisioningUrlFocused)
 							}
@@ -184,7 +184,7 @@ struct SettingsAdvancedFragment: View {
 								)
 								.padding(.horizontal, 20)
 								.padding(.vertical, 10)
-								.background(settingsViewModel.remoteProvisioningUrl.isEmpty ? Color.orangeMain100 : Color.orangeMain500)
+								.background(settingsViewModel.remoteProvisioningUrl.isEmpty ? Color.lightBlueMain100 : Color.lightBlueMain500)
 								.cornerRadius(60)
 								.disabled(settingsViewModel.remoteProvisioningUrl.isEmpty)
 							}

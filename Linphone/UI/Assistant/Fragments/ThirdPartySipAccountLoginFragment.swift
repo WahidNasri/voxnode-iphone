@@ -97,7 +97,7 @@ struct ThirdPartySipAccountLoginFragment: View {
 					.overlay(
 						RoundedRectangle(cornerRadius: 60)
 							.inset(by: 0.5)
-							.stroke(isNameFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+							.stroke(isNameFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 					)
 					.padding(.bottom)
 					.focused($isNameFocused)
@@ -139,7 +139,7 @@ struct ThirdPartySipAccountLoginFragment: View {
 				.overlay(
 					RoundedRectangle(cornerRadius: 60)
 						.inset(by: 0.5)
-						.stroke(isPasswordFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+						.stroke(isPasswordFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 				)
 				.padding(.bottom)
 				
@@ -159,7 +159,7 @@ struct ThirdPartySipAccountLoginFragment: View {
 					.overlay(
 						RoundedRectangle(cornerRadius: 60)
 							.inset(by: 0.5)
-							.stroke(isDomainFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+							.stroke(isDomainFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 					)
 					.padding(.bottom)
 					.focused($isDomainFocused)
@@ -180,7 +180,7 @@ struct ThirdPartySipAccountLoginFragment: View {
 					.overlay(
 						RoundedRectangle(cornerRadius: 60)
 							.inset(by: 0.5)
-							.stroke(isDisplayNameFocused ? Color.orangeMain500 : Color.gray200, lineWidth: 1)
+							.stroke(isDisplayNameFocused ? Color.lightBlueMain500 : Color.gray200, lineWidth: 1)
 					)
 					.padding(.bottom)
 					.focused($isDisplayNameFocused)
@@ -231,8 +231,8 @@ struct ThirdPartySipAccountLoginFragment: View {
 			.padding(.vertical, 10)
 			.background(
 				(accountLoginViewModel.username.isEmpty || accountLoginViewModel.passwd.isEmpty || accountLoginViewModel.domain.isEmpty)
-				? Color.orangeMain100
-				: Color.orangeMain500)
+				? Color.lightBlueMain100
+				: Color.lightBlueMain500)
 			.cornerRadius(60)
 			.disabled(accountLoginViewModel.username.isEmpty || accountLoginViewModel.passwd.isEmpty || accountLoginViewModel.domain.isEmpty)
 			.frame(maxWidth: sharedMainViewModel.maxWidth)

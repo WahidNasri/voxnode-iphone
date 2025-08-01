@@ -69,7 +69,7 @@ struct ScheduleMeetingFragment: View {
 						Image("caret-left")
 							.renderingMode(.template)
 							.resizable()
-							.foregroundStyle(Color.orangeMain500)
+							.foregroundStyle(Color.lightBlueMain500)
 							.frame(width: 25, height: 25, alignment: .leading)
 							.padding(.all, 10)
 							.padding(.leading, -10)
@@ -276,7 +276,7 @@ struct ScheduleMeetingFragment: View {
 													Image("x")
 														.renderingMode(.template)
 														.resizable()
-														.foregroundStyle(Color.orangeMain500)
+														.foregroundStyle(Color.lightBlueMain500)
 														.frame(width: 25, height: 25)
 														.padding(.trailing, 16)
 												})
@@ -295,7 +295,7 @@ struct ScheduleMeetingFragment: View {
 							Toggle("", isOn: $meetingViewModel.sendInvitations)
 								.padding(.leading, 16)
 								.labelsHidden()
-								.tint(Color.orangeMain300)
+								.tint(Color.lightBlueMain300)
 							Text("meeting_schedule_send_invitations_title")
 								.default_text_style_500(styleSize: 14)
 							Spacer()
@@ -317,7 +317,7 @@ struct ScheduleMeetingFragment: View {
 						.renderingMode(.template)
 						.foregroundStyle(.white)
 						.padding()
-						.background(Color.orangeMain500)
+						.background(Color.lightBlueMain500)
 						.clipShape(Circle())
 						.shadow(color: .black.opacity(0.2), radius: 4)
 					
@@ -330,7 +330,7 @@ struct ScheduleMeetingFragment: View {
 						VStack {
 							Spacer()
 							ProgressView()
-								.progressViewStyle(CircularProgressViewStyle(tint: .orangeMain500))
+								.progressViewStyle(CircularProgressViewStyle(tint: .lightBlueMain500))
 								.scaleEffect(3.0, anchor: .center) // Makes the spinner larger
 							Spacer()
 						}
@@ -429,7 +429,7 @@ struct ScheduleMeetingFragment: View {
 					view.datePickerStyle(.wheel)
 				}
 				.datePickerStyle(.graphical)
-				.tint(Color.orangeMain500)
+				.tint(Color.lightBlueMain500)
 				.padding(.bottom, 20)
 				.default_text_style(styleSize: 15)
 				
@@ -462,7 +462,7 @@ struct ScheduleMeetingFragment: View {
 			.cornerRadius(20)
 			.padding(.horizontal)
 			.frame(maxHeight: .infinity)
-			.shadow(color: Color.orangeMain500, radius: 0, x: 0, y: 2)
+			.shadow(color: Color.lightBlueMain500, radius: 0, x: 0, y: 2)
 			// .frame(maxWidth: sharedMainViewModel.maxWidth)
 			.position(x: geometry.size.width / 2, y: geometry.size.height / 2)
 		}
@@ -494,7 +494,7 @@ struct ScheduleMeetingFragment: View {
 	
 	@Sendable private func delayColor() async {
 		try? await Task.sleep(nanoseconds: 250_000_000)
-		delayedColor = Color.orangeMain500
+		delayedColor = Color.lightBlueMain500
 	}
 	
 	func delayColorDismiss() {

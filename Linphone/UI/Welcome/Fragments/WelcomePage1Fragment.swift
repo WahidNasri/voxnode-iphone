@@ -26,10 +26,10 @@ struct WelcomePage1Fragment: View {
 		VStack {
 			Spacer()
 			VStack {
-				Image("linphone")
+				Image("voipphone")
 					.renderingMode(.template)
 					.resizable()
-					.foregroundStyle(Color.orangeMain500)
+					.foregroundStyle(Color.lightBlueMain500)
 					.frame(width: 100, height: 100)
 				Text(Bundle.main.displayName)
 					.welcome_text_style_gray_800(styleSize: 30)
