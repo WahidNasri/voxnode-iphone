@@ -42,6 +42,53 @@ struct VoxNodeProvider: Codable, Identifiable, Hashable {
     }
 }
 
+// VoxLoginResult struct for API response
+struct VoxLoginResult: Codable {
+    let status: String
+    let language: String
+    let clientId: Int
+    let clientEmail: String
+    let clientKey: String
+    let clientSmsEnabled: Int
+    let clientBalanceEnabled: Int
+    let clientInboundEnabled: Int
+    let clientSipAddress: String
+    let clientSipPassword: String
+    let clientOutboundEnabled: Int
+    let clientBalance: Int
+    let urlRecharge: String
+    
+    var isSuccess: Bool {
+        return status.lowercased() == "true"
+    }
+    
+    var isSmsEnabled: Bool {
+        return clientSmsEnabled == 1
+    }
+    
+    var isBalanceEnabled: Bool {
+        return clientBalanceEnabled == 1
+    }
+    
+    var isInboundEnabled: Bool {
+        return clientInboundEnabled == 1
+    }
+    
+    var isOutboundEnabled: Bool {
+        return clientOutboundEnabled == 1
+    }
+    
+    var sipUserName: String {
+        let components = clientSipAddress.split(separator: "@")
+        return components.first.map(String.init) ?? ""
+    }
+    
+    var sipDomain: String {
+        let components = clientSipAddress.split(separator: "@")
+        return components.count > 1 ? String(components[1]) : ""
+    }
+}
+
 struct VoxLoginView: View {
     @ObservedObject var accountViewModel: AccountLoginViewModel
     
@@ -51,6 +98,7 @@ struct VoxLoginView: View {
     @State private var isDropdownExpanded = false
     @State private var isLoading = true
     @State private var errorMessage: String?
+    @State private var isLoggingIn = false
     
     // Computed properties to simplify complex expressions
     private var logoColor: Color {
@@ -80,6 +128,7 @@ struct VoxLoginView: View {
     private var enabledProviders: [VoxNodeProvider] {
         return providers.filter { $0.isEnabled }
     }
+    
     
     var body: some View {
         ZStack {
@@ -252,22 +301,29 @@ struct VoxLoginView: View {
                 
                 // Login Button
                 Button(action: {
-                    accountViewModel.login()
+                    performVoxLogin()
                 }) {
-                    Text("Login")
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(titleColor)
-                        )
+                    HStack {
+                        if isLoggingIn {
+                            ProgressView()
+                                .scaleEffect(0.8)
+                                .foregroundColor(.white)
+                        }
+                        Text(isLoggingIn ? "Logging in..." : "Login")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(titleColor)
+                    )
                 }
                 .padding(.horizontal, 24)
-                .disabled(!isProviderSelected || isLoading)
-                .opacity((!isProviderSelected || isLoading) ? 0.6 : 1.0)
+                .disabled(!isProviderSelected || isLoading || isLoggingIn)
+                .opacity((!isProviderSelected || isLoading || isLoggingIn) ? 0.6 : 1.0)
                 
                 Spacer()
             }
@@ -320,6 +376,81 @@ struct VoxLoginView: View {
     }
     
     // MARK: - API Functions
+    
+    private func performVoxLogin() {
+        guard let selectedProvider = selectedProvider else {
+            errorMessage = "Please select a provider"
+            return
+        }
+        
+        guard !accountViewModel.username.isEmpty else {
+            errorMessage = "Please enter your email"
+            return
+        }
+        
+        guard !accountViewModel.passwd.isEmpty else {
+            errorMessage = "Please enter your password"
+            return
+        }
+        
+        isLoggingIn = true
+        errorMessage = nil
+        
+        guard let url = URL(string: "https://api3.voxnode.com/login") else {
+            errorMessage = "Invalid URL"
+            isLoggingIn = false
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        // Create URL encoded body
+        let bodyString = "email=\(accountViewModel.username.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&password=\(accountViewModel.passwd.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&providerId=\(selectedProvider.providerId)"
+        request.httpBody = bodyString.data(using: .utf8)
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                self.isLoggingIn = false
+                
+                if let error = error {
+                    self.errorMessage = "Network error: \(error.localizedDescription)"
+                    return
+                }
+                
+                guard let data = data else {
+                    self.errorMessage = "No data received"
+                    return
+                }
+                
+                do {
+                    let loginResult = try JSONDecoder().decode(VoxLoginResult.self, from: data)
+                    
+                    if loginResult.isSuccess {
+                        // Handle successful login
+                        self.handleSuccessfulLogin(loginResult)
+                    } else {
+                        self.errorMessage = "Login failed. Please check your credentials."
+                    }
+                } catch {
+                    self.errorMessage = "Failed to parse response: \(error.localizedDescription)"
+                }
+            }
+        }.resume()
+    }
+    
+    private func handleSuccessfulLogin(_ loginResult: VoxLoginResult) {
+        print("VoxLoginResult: \(loginResult)")
+        
+        accountViewModel.passwd = loginResult.clientSipPassword
+        accountViewModel.username = loginResult.sipUserName
+        accountViewModel.transportType = "UDP"
+        accountViewModel.domain = loginResult.sipDomain
+        accountViewModel.displayName = loginResult.sipUserName
+        
+        accountViewModel.login()
+    }
     
     private func fetchProviders() {
         isLoading = true
