@@ -371,106 +371,17 @@ struct VoxContentView: View {
 													}
 												}
 												
-												Text(String(localized: index == 0 ? "bottom_navigation_contacts_label" : (index == 1 ? "bottom_navigation_calls_label" : (index == 2 ? "bottom_navigation_conversations_label" : "bottom_navigation_meetings_label"))))
+												Text(String(localized: 
+												index == 0 ? "bottom_navigation_calls_label" : 
+												index == 1 ? "bottom_navigation_contacts_label" : 
+												index == 2 ? "Dialer" : 
+												index == 3 ? "bottom_navigation_meetings_label" : 
+												"bottom_navigation_meetings_label"))
 													.default_text_style_white_800(styleSize: 20)
 													.padding(.leading, 10)
-												
+											
 												Spacer()
 												
-												Button {
-													withAnimation {
-														searchIsActive.toggle()
-													}
-												} label: {
-													Image("magnifying-glass")
-														.renderingMode(.template)
-														.resizable()
-														.foregroundStyle(.white)
-														.frame(width: 25, height: 25, alignment: .leading)
-														.padding(.all, 10)
-												}
-												.padding(.trailing, index == 2 ? 10 : 0)
-												
-												if index == 3 {
-													Button {
-														NotificationCenter.default.post(name: MeetingsListViewModel.ScrollToTodayNotification, object: nil)
-													} label: {
-														Image("calendar")
-															.renderingMode(.template)
-															.resizable()
-															.foregroundStyle(.white)
-															.frame(width: 25, height: 25, alignment: .leading)
-															.padding(.all, 10)
-													}
-													.padding(.trailing, 10)
-												} else if index != 2 {
-													Menu {
-														if index == 0 {
-															Button {
-																contactViewModel.indexDisplayedFriend = nil
-																isMenuOpen = false
-																magicSearch.allContact = true
-																MagicSearchSingleton.shared.searchForContacts(
-																	sourceFlags: MagicSearch.Source.Friends.rawValue | MagicSearch.Source.LdapServers.rawValue)
-															} label: {
-																HStack {
-																	Text("contacts_list_filter_popup_see_all")
-																	Spacer()
-																	if magicSearch.allContact {
-																		Image("green-check")
-																			.resizable()
-																			.frame(width: 25, height: 25, alignment: .leading)
-																			.padding(.all, 10)
-																	}
-																}
-															}
-															
-															Button {
-																contactViewModel.indexDisplayedFriend = nil
-																isMenuOpen = false
-																magicSearch.allContact = false
-																MagicSearchSingleton.shared.searchForContacts(
-																	sourceFlags: MagicSearch.Source.Friends.rawValue | MagicSearch.Source.LdapServers.rawValue)
-															} label: {
-																HStack {
-																	Text(String(format: String(localized: "contacts_list_filter_popup_see_linphone_only"), Bundle.main.displayName))
-																	Spacer()
-																	if !magicSearch.allContact {
-																		Image("green-check")
-																			.resizable()
-																			.frame(width: 25, height: 25, alignment: .leading)
-																			.padding(.all, 10)
-																	}
-																}
-															}
-														} else {
-															Button(role: .destructive) {
-																isMenuOpen = false
-																isShowDeleteAllHistoryPopup.toggle()
-															} label: {
-																HStack {
-																	Text("menu_delete_history")
-																	Spacer()
-																	Image("trash-simple-red")
-																		.resizable()
-																		.frame(width: 25, height: 25, alignment: .leading)
-																		.padding(.all, 10)
-																}
-															}
-														}
-													} label: {
-														Image(index == 0 ? "funnel" : "dots-three-vertical")
-															.renderingMode(.template)
-															.resizable()
-															.foregroundStyle(.white)
-															.frame(width: 25, height: 25, alignment: .leading)
-															.padding(.all, 10)
-													}
-													.padding(.trailing, 10)
-													.onTapGesture {
-														isMenuOpen = true
-													}
-												}
 											}
 											.frame(maxWidth: .infinity)
 											.frame(height: 50)
@@ -614,82 +525,71 @@ struct VoxContentView: View {
 										}
 										
 										if self.index == 0 {
+                                            HistoryView(
+                                                historyListViewModel: historyListViewModel,
+                                                historyViewModel: historyViewModel,
+                                                contactViewModel: contactViewModel,
+                                                editContactViewModel: editContactViewModel,
+                                                index: $index,
+                                                isShowStartCallFragment: $isShowStartCallFragment,
+                                                isShowEditContactFragment: $isShowEditContactFragment,
+                                                text: $text
+                                            )
+                                            .roundedCorner(25, corners: [.topRight, .topLeft])
+                                            .shadow(
+                                                color: (orientation == .landscapeLeft
+                                                        || orientation == .landscapeRight
+                                                        || UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height)
+                                                ? .white.opacity(0.0)
+                                                : .black.opacity(0.2),
+                                                radius: 25
+                                            )
+                                            
+                                            /*
+											
+                                             */
+										} else if self.index == 1 {
+                                            ContactsView(
+                                                contactViewModel: contactViewModel,
+                                                historyViewModel: historyViewModel,
+                                                editContactViewModel: editContactViewModel,
+                                                isShowEditContactFragment: $isShowEditContactFragment,
+                                                isShowDeletePopup: $isShowDeleteContactPopup,
+                                                text: $text
+                                            )
+                                            .roundedCorner(25, corners: [.topRight, .topLeft])
+                                            .shadow(
+                                                color: (orientation == .landscapeLeft
+                                                        || orientation == .landscapeRight
+                                                        || UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height)
+                                                ? .white.opacity(0.0)
+                                                : .black.opacity(0.2),
+                                                radius: 25
+                                            )
+                                    
+										} else if self.index == 2 {
                                             VoxDialerView(
                                                 startCallViewModel: StartCallViewModel(),
                                                 callViewModel: callViewModel,
                                             )
-                                            /*
-											ContactsView(
-												contactViewModel: contactViewModel,
-												historyViewModel: historyViewModel,
-												editContactViewModel: editContactViewModel,
-												isShowEditContactFragment: $isShowEditContactFragment,
-												isShowDeletePopup: $isShowDeleteContactPopup,
-												text: $text
-											)
-											.roundedCorner(25, corners: [.topRight, .topLeft])
-											.shadow(
-												color: (orientation == .landscapeLeft
-														|| orientation == .landscapeRight
-														|| UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height)
-												? .white.opacity(0.0)
-												: .black.opacity(0.2),
-												radius: 25
-											)
-                                             */
-										} else if self.index == 1 {
-											HistoryView(
-												historyListViewModel: historyListViewModel,
-												historyViewModel: historyViewModel,
-												contactViewModel: contactViewModel,
-												editContactViewModel: editContactViewModel,
-												index: $index,
-												isShowStartCallFragment: $isShowStartCallFragment,
-												isShowEditContactFragment: $isShowEditContactFragment,
-												text: $text
-											)
-											.roundedCorner(25, corners: [.topRight, .topLeft])
-											.shadow(
-												color: (orientation == .landscapeLeft
-														|| orientation == .landscapeRight
-														|| UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height)
-												? .white.opacity(0.0)
-												: .black.opacity(0.2),
-												radius: 25
-											)
-										} else if self.index == 2 {
-											ConversationsView(
-												conversationViewModel: conversationViewModel,
-												conversationsListViewModel: conversationsListViewModel,
-												text: $text,
-												isShowStartConversationFragment: $isShowStartConversationFragment
-											)
-											.roundedCorner(25, corners: [.topRight, .topLeft])
-											.shadow(
-												color: (orientation == .landscapeLeft
-														|| orientation == .landscapeRight
-														|| UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height)
-												? .white.opacity(0.0)
-												: .black.opacity(0.2),
-												radius: 25
-											)
+											
 										} else if self.index == 3 {
-											MeetingsView(
-												meetingsListViewModel: meetingsListViewModel,
-												meetingViewModel: meetingViewModel,
-												isShowScheduleMeetingFragment: $isShowScheduleMeetingFragment,
-												isShowSendCancelMeetingNotificationPopup: $isShowSendCancelMeetingNotificationPopup,
-												text: $text
-											)
-											.roundedCorner(25, corners: [.topRight, .topLeft])
-											.shadow(
-												color: (orientation == .landscapeLeft
-														|| orientation == .landscapeRight
-														|| UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height)
-												? .white.opacity(0.0)
-												: .black.opacity(0.2),
-												radius: 25
-											)
+                                            ConversationsView(
+                                                conversationViewModel: conversationViewModel,
+                                                conversationsListViewModel: conversationsListViewModel,
+                                                text: $text,
+                                                isShowStartConversationFragment: $isShowStartConversationFragment
+                                            )
+                                            .roundedCorner(25, corners: [.topRight, .topLeft])
+                                            .shadow(
+                                                color: (orientation == .landscapeLeft
+                                                        || orientation == .landscapeRight
+                                                        || UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height)
+                                                ? .white.opacity(0.0)
+                                                : .black.opacity(0.2),
+                                                radius: 25
+                                            )
+                                        
 										}
 									}
 								}
@@ -720,8 +620,58 @@ struct VoxContentView: View {
 							HStack {
 								Group {
 									Spacer()
+                                    ZStack {
+                                        if historyListViewModel.missedCallsCount > 0 {
+                                            VStack {
+                                                HStack {
+                                                    Text(
+                                                        historyListViewModel.missedCallsCount < 99
+                                                        ? String(historyListViewModel.missedCallsCount)
+                                                        : "99+"
+                                                    )
+                                                    .foregroundStyle(.white)
+                                                    .default_text_style(styleSize: 10)
+                                                    .lineLimit(1)
+                                                }
+                                                .frame(width: 18, height: 18)
+                                                .background(Color.redDanger500)
+                                                .cornerRadius(50)
+                                            }
+                                            .padding(.bottom, 30)
+                                            .padding(.leading, 30)
+                                        }
+                                        
+                                        Button(action: {
+                                            self.index = 0
+                                            contactViewModel.indexDisplayedFriend = nil
+                                            conversationViewModel.displayedConversation = nil
+                                            meetingViewModel.displayedMeeting = nil
+                                            if historyListViewModel.missedCallsCount > 0 {
+                                                historyListViewModel.resetMissedCallsCount()
+                                            }
+                                        }, label: {
+                                            VStack {
+                                                Image("phone")
+                                                    .renderingMode(.template)
+                                                    .resizable()
+                                                    .foregroundStyle(self.index == 0 ? Color.lightBlueMain500 : Color.grayMain2c600)
+                                                    .frame(width: 25, height: 25)
+                                                if self.index == 0 {
+                                                    Text("bottom_navigation_calls_label")
+                                                        .default_text_style_700(styleSize: 9)
+                                                } else {
+                                                    Text("bottom_navigation_calls_label")
+                                                        .default_text_style(styleSize: 9)
+                                                }
+                                            }
+                                        })
+                                        .padding(.top)
+                                        .frame(width: 66)
+                                    }
+                                    
+                                    Spacer()
 									Button(action: {
-										self.index = 0
+										self.index = 1
 										historyViewModel.displayedCall = nil
 										conversationViewModel.displayedConversation = nil
 										meetingViewModel.displayedMeeting = nil
@@ -730,9 +680,9 @@ struct VoxContentView: View {
 											Image("address-book")
 												.renderingMode(.template)
 												.resizable()
-												.foregroundStyle(self.index == 0 ? Color.lightBlueMain500 : Color.grayMain2c600)
+												.foregroundStyle(self.index == 1 ? Color.lightBlueMain500 : Color.grayMain2c600)
 												.frame(width: 25, height: 25)
-											if self.index == 0 {
+											if self.index == 1 {
 												Text("bottom_navigation_contacts_label")
 													.default_text_style_700(styleSize: 10)
 											} else {
@@ -746,56 +696,7 @@ struct VoxContentView: View {
 									
 									Spacer()
 									
-									ZStack {
-										if historyListViewModel.missedCallsCount > 0 {
-											VStack {
-												HStack {
-													Text(
-														historyListViewModel.missedCallsCount < 99
-														? String(historyListViewModel.missedCallsCount)
-														: "99+"
-													)
-													.foregroundStyle(.white)
-													.default_text_style(styleSize: 10)
-													.lineLimit(1)
-												}
-												.frame(width: 18, height: 18)
-												.background(Color.redDanger500)
-												.cornerRadius(50)
-											}
-											.padding(.bottom, 30)
-											.padding(.leading, 30)
-										}
-										
-										Button(action: {
-											self.index = 1
-											contactViewModel.indexDisplayedFriend = nil
-											conversationViewModel.displayedConversation = nil
-											meetingViewModel.displayedMeeting = nil
-											if historyListViewModel.missedCallsCount > 0 {
-												historyListViewModel.resetMissedCallsCount()
-											}
-										}, label: {
-											VStack {
-												Image("phone")
-													.renderingMode(.template)
-													.resizable()
-													.foregroundStyle(self.index == 1 ? Color.lightBlueMain500 : Color.grayMain2c600)
-													.frame(width: 25, height: 25)
-												if self.index == 1 {
-													Text("bottom_navigation_calls_label")
-														.default_text_style_700(styleSize: 9)
-												} else {
-													Text("bottom_navigation_calls_label")
-														.default_text_style(styleSize: 9)
-												}
-											}
-										})
-										.padding(.top)
-										.frame(width: 66)
-									}
 									
-									Spacer()
 									
 									ZStack {
 										if conversationsListViewModel.unreadMessages > 0 {
@@ -832,10 +733,10 @@ struct VoxContentView: View {
 													.frame(width: 25, height: 25)
 												
 												if self.index == 2 {
-													Text("bottom_navigation_conversations_label")
+													Text("Dialer")
 														.default_text_style_700(styleSize: 9)
 												} else {
-													Text("bottom_navigation_conversations_label")
+													Text("Dialer")
 														.default_text_style(styleSize: 9)
 												}
 											}
@@ -843,10 +744,34 @@ struct VoxContentView: View {
 										.padding(.top)
 										.frame(width: 66)
 									}
-									
+                                    Spacer()
+                                    Button(action: {
+                                        self.index = 3
+                                        contactViewModel.indexDisplayedFriend = nil
+                                        historyViewModel.displayedCall = nil
+                                        conversationViewModel.displayedConversation = nil
+                                    }, label: {
+                                        VStack {
+                                            Image("video-conference")
+                                                .renderingMode(.template)
+                                                .resizable()
+                                                .foregroundStyle(self.index == 3 ? Color.lightBlueMain500 : Color.grayMain2c600)
+                                                .frame(width: 25, height: 25)
+                                            if self.index == 3 {
+                                                Text("bottom_navigation_meetings_label")
+                                                    .default_text_style_700(styleSize: 9)
+                                            } else {
+                                                Text("bottom_navigation_meetings_label")
+                                                    .default_text_style(styleSize: 9)
+                                            }
+                                        }
+                                    })
+                                    .padding(.top)
+                                    .frame(width: 66)
 									Spacer()
+                                    
 									Button(action: {
-										self.index = 3
+										self.index = 4
 										contactViewModel.indexDisplayedFriend = nil
 										historyViewModel.displayedCall = nil
 										conversationViewModel.displayedConversation = nil
@@ -857,7 +782,7 @@ struct VoxContentView: View {
 												.resizable()
 												.foregroundStyle(self.index == 3 ? Color.lightBlueMain500 : Color.grayMain2c600)
 												.frame(width: 25, height: 25)
-											if self.index == 3 {
+											if self.index == 4 {
 												Text("bottom_navigation_meetings_label")
 													.default_text_style_700(styleSize: 9)
 											} else {
@@ -882,7 +807,7 @@ struct VoxContentView: View {
 					}
 					
 					if contactViewModel.indexDisplayedFriend != nil || historyViewModel.displayedCall != nil || conversationViewModel.displayedConversation != nil ||
-						meetingViewModel.displayedMeeting != nil {
+						meetingViewModel.displayedMeeting != nil{
 						HStack(spacing: 0) {
 							Spacer()
 								.frame(maxWidth:
@@ -893,35 +818,40 @@ struct VoxContentView: View {
 									   : 0
 								)
 							if self.index == 0 {
-								ContactFragment(
-									contactViewModel: contactViewModel,
-									editContactViewModel: editContactViewModel,
-									conversationViewModel: conversationViewModel,
-									isShowDeletePopup: $isShowDeleteContactPopup,
-									isShowDismissPopup: $isShowDismissPopup,
-									isShowSipAddressesPopup: $isShowSipAddressesPopup,
-									isShowSipAddressesPopupType: $isShowSipAddressesPopupType
-								)
-								.frame(maxWidth: .infinity)
-								.background(Color.gray100)
-								.ignoresSafeArea(.keyboard)
+                                if historyViewModel.displayedCall != nil && historyViewModel.displayedCall!.avatarModel != nil {
+                                    HistoryContactFragment(
+                                        contactAvatarModel: historyViewModel.displayedCall!.avatarModel!,
+                                        historyViewModel: historyViewModel,
+                                        historyListViewModel: historyListViewModel,
+                                        contactViewModel: contactViewModel,
+                                        editContactViewModel: editContactViewModel,
+                                        isShowDeleteAllHistoryPopup: $isShowDeleteAllHistoryPopup,
+                                        isShowEditContactFragment: $isShowEditContactFragment,
+                                        indexPage: $index
+                                    )
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.gray100)
+                                    .ignoresSafeArea(.keyboard)
+                                }
 							} else if self.index == 1 {
-								if historyViewModel.displayedCall != nil && historyViewModel.displayedCall!.avatarModel != nil {
-									HistoryContactFragment(
-										contactAvatarModel: historyViewModel.displayedCall!.avatarModel!,
-										historyViewModel: historyViewModel,
-										historyListViewModel: historyListViewModel,
-										contactViewModel: contactViewModel,
-										editContactViewModel: editContactViewModel,
-										isShowDeleteAllHistoryPopup: $isShowDeleteAllHistoryPopup,
-										isShowEditContactFragment: $isShowEditContactFragment,
-										indexPage: $index
-									)
-									.frame(maxWidth: .infinity)
-									.background(Color.gray100)
-									.ignoresSafeArea(.keyboard)
-								}
-							} else if self.index == 2 {
+                                ContactFragment(
+                                    contactViewModel: contactViewModel,
+                                    editContactViewModel: editContactViewModel,
+                                    conversationViewModel: conversationViewModel,
+                                    isShowDeletePopup: $isShowDeleteContactPopup,
+                                    isShowDismissPopup: $isShowDismissPopup,
+                                    isShowSipAddressesPopup: $isShowSipAddressesPopup,
+                                    isShowSipAddressesPopupType: $isShowSipAddressesPopupType
+                                )
+                                .frame(maxWidth: .infinity)
+                                .background(Color.gray100)
+                                .ignoresSafeArea(.keyboard)
+								
+							}
+                            else if self.index == 2 {
+                                Text("")
+                            }
+                            else if self.index == 3 {
 								ConversationFragment(
 									conversationViewModel: conversationViewModel,
 									conversationsListViewModel: conversationsListViewModel,
@@ -939,7 +869,8 @@ struct VoxContentView: View {
 								.frame(maxWidth: .infinity)
 								.background(Color.gray100)
 								.ignoresSafeArea(.keyboard)
-							} else if self.index == 3 {
+							} else if self.index == 4 {
+                                //TODO: settings appbar
 								MeetingFragment(meetingViewModel: meetingViewModel, meetingsListViewModel: meetingsListViewModel, isShowScheduleMeetingFragment: $isShowScheduleMeetingFragment, isShowSendCancelMeetingNotificationPopup: $isShowSendCancelMeetingNotificationPopup)
 									.frame(maxWidth: .infinity)
 									.background(Color.gray100)
