@@ -591,6 +591,9 @@ struct VoxContentView: View {
                                             )
                                         
 										}
+                                        else if self.index == 4{
+                                            VoxSettingsView()
+                                        }
 									}
 								}
 							}

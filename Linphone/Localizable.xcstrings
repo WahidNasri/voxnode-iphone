@@ -542,6 +542,9 @@
         }
       }
     },
+    "Annuler" : {
+
+    },
     "assistant_account_create" : {
       "localizations" : {
         "en" : {
@@ -3902,6 +3905,9 @@
         }
       }
     },
+    "Êtes-vous sûr de vouloir vous déconnecter ?" : {
+
+    },
     "failed_meeting_ics_invitation_not_sent_toast" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -6097,6 +6103,9 @@
         }
       }
     },
+    "Options" : {
+
+    },
     "or" : {
       "localizations" : {
         "en" : {
@@ -6203,6 +6212,9 @@
           }
         }
       }
+    },
+    "Se déconnecter" : {
+
     },
     "Select Country" : {
 
@@ -7597,6 +7609,9 @@
       }
     },
     "VoIP" : {
+
+    },
+    "VoIP Provider: %@" : {
 
     },
     "web_platform_forgotten_password_url" : {
