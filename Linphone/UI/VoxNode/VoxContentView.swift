@@ -525,7 +525,7 @@ struct VoxContentView: View {
 										}
 										
 										if self.index == 0 {
-                                            HistoryView(
+                                            VoxCallsAndRecordingsView(
                                                 historyListViewModel: historyListViewModel,
                                                 historyViewModel: historyViewModel,
                                                 contactViewModel: contactViewModel,

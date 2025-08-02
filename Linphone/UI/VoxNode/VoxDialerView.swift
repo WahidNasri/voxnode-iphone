@@ -45,128 +45,132 @@ struct VoxDialerView: View {
     ]
     
     var body: some View {
-        VStack(spacing: 0) {
-            // Top Section - Balance and Country
-            VStack(spacing: 16) {
-                // Balance
-                Text("Solde 0.0 €")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.gray)
-                
-                // Country Selection
-                HStack {
-                    Button(action: {
-                        showingCountryPicker = true
-                    }) {
-                        HStack(spacing: 8) {
-                            Text(selectedCountry.flag)
-                                .font(.title2)
-                            
-                            Text(selectedCountry.name)
-                                .font(.system(size: 16, weight: .medium))
-                                .foregroundColor(.primary)
-                            
-                            Image(systemName: "chevron.down")
-                                .font(.system(size: 12))
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    
-                    Spacer()
-                }
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 20)
-            
-            // Middle Section - Phone Number Input
-            VStack(spacing: 16) {
-                HStack(spacing: 8) {
-                    // Country Code
-                    Text(selectedCountry.phoneCode)
-                        .font(.system(size: 32, weight: .bold))
-                        .foregroundColor(.primary)
-                    
-                    // Dialed Number
-                    Text(dialedNumber)
-                        .font(.system(size: 32, weight: .bold))
-                        .foregroundColor(.primary)
-                    
-                    Spacer()
-                    
-                    // Backspace Button
-                    if !dialedNumber.isEmpty {
-                        Button(action: {
-                            if !dialedNumber.isEmpty {
-                                dialedNumber.removeLast()
-                                startCallViewModel.searchField = String(startCallViewModel.searchField.dropLast())
-                            }
-                        }) {
-                            Image(systemName: "arrow.left")
-                                .font(.system(size: 20, weight: .medium))
-                                .foregroundColor(.primary)
-                                .frame(width: 44, height: 44)
-                                .background(Color.gray.opacity(0.1))
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                        }
-                    }
-                }
-                .padding(.horizontal, 20)
-            }
-            
-            Spacer()
-            
-            // Dial Pad
-            VStack(spacing: 16) {
-                ForEach(0..<dialPadButtons.count, id: \.self) { row in
-                    HStack(spacing: 16) {
-                        ForEach(0..<dialPadButtons[row].count, id: \.self) { column in
-                            let button = dialPadButtons[row][column]
-                            let letters = dialPadLetters[row][column]
-                            
+        NavigationView {
+            ZStack(alignment: .bottomTrailing) {
+                VStack(spacing: 0) {
+                    // Top Section - Balance and Country
+                    VStack(spacing: 16) {
+                        // Balance
+                        Text("Solde 0.0 €")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.gray)
+                        
+                        // Country Selection
+                        HStack {
                             Button(action: {
-                                handleDialPadPress(button)
+                                showingCountryPicker = true
                             }) {
-                                VStack(spacing: 4) {
-                                    Text(button)
-                                        .font(.system(size: 28, weight: .medium))
+                                HStack(spacing: 8) {
+                                    Text(selectedCountry.flag)
+                                        .font(.title2)
+                                    
+                                    Text(selectedCountry.name)
+                                        .font(.system(size: 16, weight: .medium))
                                         .foregroundColor(.primary)
                                     
-                                    if !letters.isEmpty {
-                                        Text(letters)
-                                            .font(.system(size: 12))
-                                            .foregroundColor(.gray)
-                                    }
+                                    Image(systemName: "chevron.down")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.gray)
                                 }
-                                .frame(width: 80, height: 80)
-                                .background(Color.gray.opacity(0.1))
-                                .clipShape(Circle())
                             }
                             .buttonStyle(PlainButtonStyle())
+                            
+                            Spacer()
                         }
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 20)
+                    
+                    // Middle Section - Phone Number Input
+                    VStack(spacing: 16) {
+                        HStack(spacing: 8) {
+                            // Country Code
+                            Text(selectedCountry.phoneCode)
+                                .font(.system(size: 32, weight: .bold))
+                                .foregroundColor(.primary)
+                            
+                            // Dialed Number
+                            Text(dialedNumber)
+                                .font(.system(size: 32, weight: .bold))
+                                .foregroundColor(.primary)
+                            
+                            Spacer()
+                            
+                            // Backspace Button
+                            if !dialedNumber.isEmpty {
+                                Button(action: {
+                                    if !dialedNumber.isEmpty {
+                                        dialedNumber.removeLast()
+                                        startCallViewModel.searchField = String(startCallViewModel.searchField.dropLast())
+                                    }
+                                }) {
+                                    Image(systemName: "arrow.left")
+                                        .font(.system(size: 20, weight: .medium))
+                                        .foregroundColor(.primary)
+                                        .frame(width: 44, height: 44)
+                                        .background(Color.gray.opacity(0.1))
+                                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                    }
+                    
+                    Spacer()
+                    
+                    // Dial Pad
+                    VStack(spacing: 16) {
+                        ForEach(0..<dialPadButtons.count, id: \.self) { row in
+                            HStack(spacing: 16) {
+                                ForEach(0..<dialPadButtons[row].count, id: \.self) { column in
+                                    let button = dialPadButtons[row][column]
+                                    let letters = dialPadLetters[row][column]
+                                    
+                                    Button(action: {
+                                        handleDialPadPress(button)
+                                    }) {
+                                        VStack(spacing: 4) {
+                                            Text(button)
+                                                .font(.system(size: 28, weight: .medium))
+                                                .foregroundColor(.primary)
+                                            
+                                            if !letters.isEmpty {
+                                                Text(letters)
+                                                    .font(.system(size: 12))
+                                                    .foregroundColor(.gray)
+                                            }
+                                        }
+                                        .frame(width: 80, height: 80)
+                                        .background(Color.gray.opacity(0.1))
+                                        .clipShape(Circle())
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 40)
+                    
+                    // Call Button
+                    Button(action: {
+                        makeCall()
+                    }) {
+                        Image(systemName: "phone.fill")
+                            .font(.system(size: 24, weight: .medium))
+                            .foregroundColor(.white)
+                            .frame(width: 80, height: 80)
+                            .background(Color.blue)
+                            .clipShape(Circle())
+                            .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
+                    }
+                    .padding(.bottom, 40)
+                }
+                .background(Color(.systemBackground))
+                .sheet(isPresented: $showingCountryPicker) {
+                    CountryPickerView(selectedCountry: $selectedCountry)
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 40)
-            
-            // Call Button
-            Button(action: {
-                makeCall()
-            }) {
-                Image(systemName: "phone.fill")
-                    .font(.system(size: 24, weight: .medium))
-                    .foregroundColor(.white)
-                    .frame(width: 80, height: 80)
-                    .background(Color.blue)
-                    .clipShape(Circle())
-                    .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
-            }
-            .padding(.bottom, 40)
-        }
-        .background(Color(.systemBackground))
-        .sheet(isPresented: $showingCountryPicker) {
-            CountryPickerView(selectedCountry: $selectedCountry)
         }
     }
     

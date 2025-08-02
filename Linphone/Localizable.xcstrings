@@ -1921,6 +1921,9 @@
         }
       }
     },
+    "Calls" : {
+
+    },
     "calls_count_label" : {
       "localizations" : {
         "en" : {
@@ -6024,6 +6027,9 @@
         }
       }
     },
+    "No recordings" : {
+
+    },
     "None" : {
 
     },
@@ -6177,6 +6183,9 @@
           }
         }
       }
+    },
+    "Recordings" : {
+
     },
     "recordings_title" : {
       "extractionState" : "manual",
