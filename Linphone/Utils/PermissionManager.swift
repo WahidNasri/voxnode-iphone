@@ -34,8 +34,88 @@ class PermissionManager: ObservableObject {
 	@Published var contactsPermissionGranted = false
 	@Published var microphonePermissionGranted = false
 	@Published var allPermissionsHaveBeenDisplayed = false
+    
+    @Published var notificationsStatus = ""
+    @Published var contactsStatus = ""
+    @Published var micStatus = ""
+    @Published var videoCameraStatus = ""
 	
-	private init() {}
+	private init() {
+        setMicrophoneStatus()
+        setNotificationsStatus()
+        setContactsStatus()
+        setVideoCameraStatus()
+    }
+    
+    func setVideoCameraStatus() {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .notDetermined:
+            videoCameraStatus = "Undetermined (tap to allow)"
+        case .restricted:
+            videoCameraStatus = "Restricted"
+        case .denied:
+            videoCameraStatus = "Denied"
+        case .authorized:
+            cameraPermissionGranted = true
+            videoCameraStatus = "Authorized"
+        @unknown default:
+            videoCameraStatus = "Unknown"
+        }
+    }
+    
+    func setMicrophoneStatus() {
+        switch AVAudioSession.sharedInstance().recordPermission {
+        case .granted:
+            microphonePermissionGranted = true
+            micStatus = "Authorized"
+        case .denied:
+            micStatus = "Denied"
+        case .undetermined:
+            micStatus = "Undetermined (tap to allow)"
+        @unknown default:
+            micStatus = "Unknown"
+        }
+    }
+    
+    func setNotificationsStatus() {
+        let current = UNUserNotificationCenter.current()
+        current.getNotificationSettings { settings in
+            switch settings.authorizationStatus {
+            case .notDetermined:
+                self.notificationsStatus = "Undetermined (tap to allow)"
+            case .denied:
+                self.notificationsStatus = "Denied"
+            case .authorized:
+                self.pushPermissionGranted = true
+                self.notificationsStatus = "Authorized"
+            case .provisional:
+                self.notificationsStatus = "Provisional"
+            case .ephemeral:
+                self.notificationsStatus = "Ephemeral"
+            @unknown default:
+                self.notificationsStatus = "Unknown"
+            }
+        }
+    }
+    
+    func setContactsStatus() {
+        switch CNContactStore.authorizationStatus(for: .contacts) {
+        case .notDetermined:
+            contactsStatus = "Undetermined (tap to allow)"
+        case .restricted:
+            contactsStatus = "Restricted"
+        case .denied:
+            contactsStatus = "Denied"
+        case .authorized:
+            contactsPermissionGranted = true
+            contactsStatus = "Authorized"
+        case .limited:
+            contactsPermissionGranted = true
+            contactsStatus = "Limited"
+        @unknown default:
+            contactsStatus = "Unknown"
+        }
+    }
 	
 	func getPermissions() {
 		pushNotificationRequestPermission {
@@ -62,15 +142,18 @@ class PermissionManager: ObservableObject {
 			}
 			DispatchQueue.main.async {
 				self.pushPermissionGranted = granted
+                self.setNotificationsStatus()
 			}
 			completion()
 		}
 	}
 	
-	func microphoneRequestPermission() {
+    func microphoneRequestPermission(completion: ((Bool)->Void)? = nil) {
 		AVAudioSession.sharedInstance().requestRecordPermission({ granted in
 			DispatchQueue.main.async {
 				self.microphonePermissionGranted = granted
+                self.setMicrophoneStatus()
+                completion?(granted)
 			}
 		})
 	}
@@ -83,28 +166,31 @@ class PermissionManager: ObservableObject {
 		})
 	}
 	
-	func cameraRequestPermission() {
-		AVCaptureDevice.requestAccess(for: .video, completionHandler: {accessGranted in
+	func cameraRequestPermission(completion: ((Bool)->Void)? = nil) {
+		AVCaptureDevice.requestAccess(for: .video, completionHandler: { accessGranted in
 			DispatchQueue.main.async {
 				self.cameraPermissionGranted = accessGranted
+                self.setVideoCameraStatus()
+                completion?(accessGranted)
 			}
 		})
 	}
 	
-	func contactsRequestPermission(group: DispatchGroup) {
+	func contactsRequestPermission(group: DispatchGroup?) {
 		let store = CNContactStore()
 		store.requestAccess(for: .contacts) { success, _ in
 			DispatchQueue.main.async {
 				self.contactsPermissionGranted = success
+                self.setContactsStatus()
 			}
-			group.leave()
+			group?.leave()
 		}
 	}
 	
 	func requestLocalNetworkAuthorization() {
 		// Use a general UDP broadcast endpoint to attempt triggering the authorization request
 		let host = NWEndpoint.Host("255.255.255.255") // Broadcast on the local network
-		let port = NWEndpoint.Port(12345) // Choose an arbitrary port
+        guard let port = NWEndpoint.Port(rawValue: 12345) else { return } // Choose an arbitrary port
 		
 		let params = NWParameters.udp
 		let connection = NWConnection(host: host, port: port, using: params)

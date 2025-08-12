@@ -32,6 +32,9 @@ struct HistoryListFragment: View {
 	
 	@Binding var showingSheet: Bool
 	@Binding var text: String
+    
+    var permissionManager = PermissionManager.shared
+    @State var showMicAlert = false
 	
 	var body: some View {
 		VStack {
@@ -168,10 +171,32 @@ struct HistoryListFragment: View {
 		}
 		.navigationTitle("")
 		.navigationBarHidden(true)
+        .alert("Microphone is needed to make calls, please allow microphone permissions from settings", isPresented: $showMicAlert) {
+            Button("Cancel") { }
+            Button("Settings", role: .cancel) {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+        }
 	}
 	
 	func doCall(index: Int) {
-		telecomManager.doCallOrJoinConf(address: historyListViewModel.callLogs[index].addressLinphone)
+        guard CoreContext.shared.networkStatusIsConnected else {
+                ToastViewModel.shared.toastMessage = "Unavailable_network"
+                ToastViewModel.shared.displayToast = true
+                return
+        }
+        
+        permissionManager.microphoneRequestPermission { granted in
+            guard granted else {
+                showMicAlert = true
+                return
+            }
+            
+            telecomManager.doCallOrJoinConf(address: historyListViewModel.callLogs[index].addressLinphone)
+        }
+		
 	}
 }
 

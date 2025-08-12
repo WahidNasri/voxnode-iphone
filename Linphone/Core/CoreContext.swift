@@ -136,10 +136,9 @@ final class CoreContext: ObservableObject {
 			self.mCore.callkitEnabled = true
 			self.mCore.pushNotificationEnabled = true
 			
-			let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String
 			let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
 			
-			let userAgent = "\(appName ?? "Linphone")iOS/\(version ?? "6.0.0") Beta (\(UIDevice.current.localizedModel.replacingOccurrences(of: "'", with: ""))) LinphoneSDK"
+			let userAgent = "VoipPhoneiOS/\(version ?? "6.0.0") Beta (\(UIDevice.current.localizedModel.replacingOccurrences(of: "'", with: ""))) LinphoneSDK"
 			self.mCore.setUserAgent(name: userAgent, version: self.coreVersion)
 			self.mCore.videoCaptureEnabled = true
 			self.mCore.videoDisplayEnabled = true

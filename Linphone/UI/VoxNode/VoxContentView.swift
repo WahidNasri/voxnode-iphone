@@ -1348,24 +1348,28 @@ struct VoxContentView: View {
 	}
 }
 
-
+@available(iOS 17.0, *)
 #Preview {
-	VoxContentView(
-		contactViewModel: ContactViewModel(),
-		editContactViewModel: EditContactViewModel(),
-		historyViewModel: HistoryViewModel(),
-		historyListViewModel: HistoryListViewModel(),
-		startCallViewModel: StartCallViewModel(),
-		startConversationViewModel: StartConversationViewModel(),
-		callViewModel: CallViewModel(),
-		meetingWaitingRoomViewModel: MeetingWaitingRoomViewModel(),
-		conversationsListViewModel: ConversationsListViewModel(),
-		conversationViewModel: ConversationViewModel(),
-		meetingsListViewModel: MeetingsListViewModel(),
-		meetingViewModel: MeetingViewModel(),
-		conversationForwardMessageViewModel: ConversationForwardMessageViewModel(),
-		accountProfileViewModel: AccountProfileViewModel()
-	)
+    
+    @Previewable @StateObject var navigationManager = NavigationManager()
+    VoxContentView(
+        contactViewModel: ContactViewModel(),
+        editContactViewModel: EditContactViewModel(),
+        historyViewModel: HistoryViewModel(),
+        historyListViewModel: HistoryListViewModel(),
+        startCallViewModel: StartCallViewModel(),
+        startConversationViewModel: StartConversationViewModel(),
+        callViewModel: CallViewModel(),
+        meetingWaitingRoomViewModel: MeetingWaitingRoomViewModel(),
+        conversationsListViewModel: ConversationsListViewModel(),
+        conversationViewModel: ConversationViewModel(),
+        meetingsListViewModel: MeetingsListViewModel(),
+        meetingViewModel: MeetingViewModel(),
+        conversationForwardMessageViewModel: ConversationForwardMessageViewModel(),
+        accountProfileViewModel: AccountProfileViewModel()
+    )
+    .environmentObject(navigationManager)
 }
+
 // swiftlint:enable type_body_length
 // swiftlint:enable line_length

@@ -2340,7 +2340,14 @@ struct CallView: View {
 								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
 								.frame(width: buttonSize, height: buttonSize)
 								.background((callViewModel.isPaused || telecomManager.isPausedByRemote) ? .white : (callViewModel.isRecording ? Color.redDanger500 : Color.gray500))
-								.cornerRadius(40)
+                                .clipShape(.circle)
+                                .scaleEffect(callViewModel.isRecording ? 1.1 : 1.0)
+                                .opacity(callViewModel.isRecording ? 0.8 : 1.0)
+                                .animation(
+                                    Animation.easeInOut(duration: 0.8)
+                                        .repeatForever(autoreverses: true),
+                                    value: callViewModel.isRecording
+                                )
 								.disabled(callViewModel.isPaused || telecomManager.isPausedByRemote)
 								
 								Text("call_action_record_call")
@@ -2869,7 +2876,7 @@ struct PressedButtonStyle: ButtonStyle {
 		meetingViewModel: MeetingViewModel(),
 		accountProfileViewModel: AccountProfileViewModel(),
 		fullscreenVideo: .constant(false),
-		isShowStartCallFragment: .constant(false),
+		isShowStartCallFragment: .constant(true),
 		isShowConversationFragment: .constant(false),
 		isShowStartCallGroupPopup: .constant(false),
 		isShowEditContactFragment: .constant(false),

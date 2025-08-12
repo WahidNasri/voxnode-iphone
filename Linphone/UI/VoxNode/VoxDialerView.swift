@@ -6,29 +6,18 @@
 //
 
 import SwiftUI
-
-struct Country: Identifiable, Hashable {
-    let id = UUID()
-    let name: String
-    let flag: String
-    let code: String
-    let phoneCode: String
-    
-    static let algeria = Country(name: "Algeria", flag: "🇩🇿", code: "DZ", phoneCode: "+213")
-    static let france = Country(name: "France", flag: "🇫🇷", code: "FR", phoneCode: "+33")
-    static let usa = Country(name: "United States", flag: "🇺🇸", code: "US", phoneCode: "+1")
-    
-    static let allCountries = [algeria, france, usa]
-}
+import PhoneNumberKit
 
 struct VoxDialerView: View {
-    @State private var selectedCountry: Country = .france
+    
     @State private var dialedNumber: String = ""
-    @State private var showingCountryPicker = false
+    @State private var phoneField: PhoneNumberTextFieldView?
     
     @ObservedObject var startCallViewModel: StartCallViewModel
     @ObservedObject var callViewModel: CallViewModel
 
+    var permissionManager = PermissionManager.shared
+    @State var showMicAlert = false
     
     private let dialPadButtons = [
         ["1", "2", "3"],
@@ -41,7 +30,7 @@ struct VoxDialerView: View {
         ["", "ABC", "DEF"],
         ["GHI", "JKL", "MNO"],
         ["PQRS", "TUV", "WXYZ"],
-        ["", "", ""]
+        ["", "+", ""]
     ]
     
     var body: some View {
@@ -49,72 +38,39 @@ struct VoxDialerView: View {
             ZStack(alignment: .bottomTrailing) {
                 VStack(spacing: 0) {
                     // Top Section - Balance and Country
-                    VStack(spacing: 16) {
+                    
                         // Balance
-                        Text("Solde 0.0 €")
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(.gray)
-                        
-                        // Country Selection
-                        HStack {
-                            Button(action: {
-                                showingCountryPicker = true
-                            }) {
-                                HStack(spacing: 8) {
-                                    Text(selectedCountry.flag)
-                                        .font(.title2)
-                                    
-                                    Text(selectedCountry.name)
-                                        .font(.system(size: 16, weight: .medium))
-                                        .foregroundColor(.primary)
-                                    
-                                    Image(systemName: "chevron.down")
-                                        .font(.system(size: 12))
-                                        .foregroundColor(.gray)
-                                }
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            
-                            Spacer()
-                        }
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 20)
+                    Text("Solde 0.0 €")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.gray)
+                        .padding(20)
+                    
                     
                     // Middle Section - Phone Number Input
-                    VStack(spacing: 16) {
-                        HStack(spacing: 8) {
-                            // Country Code
-                            Text(selectedCountry.phoneCode)
-                                .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(.primary)
-                            
-                            // Dialed Number
-                            Text(dialedNumber)
-                                .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(.primary)
-                            
-                            Spacer()
-                            
-                            // Backspace Button
-                            if !dialedNumber.isEmpty {
-                                Button(action: {
-                                    if !dialedNumber.isEmpty {
-                                        dialedNumber.removeLast()
-                                        startCallViewModel.searchField = String(startCallViewModel.searchField.dropLast())
-                                    }
-                                }) {
-                                    Image(systemName: "arrow.left")
-                                        .font(.system(size: 20, weight: .medium))
-                                        .foregroundColor(.primary)
-                                        .frame(width: 44, height: 44)
-                                        .background(Color.gray.opacity(0.1))
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    HStack {
+                        self.phoneField
+                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 60)
+                            .keyboardType(.phonePad)
+                            .allowsHitTesting(false)
+                        
+                        
+                        if !dialedNumber.isEmpty {
+                            Button(action: {
+                                if !dialedNumber.isEmpty {
+                                    phoneField?.textField.text?.removeLast()
+                                    //startCallViewModel.searchField = String(startCallViewModel.searchField.dropLast())
                                 }
+                            }) {
+                                Image(systemName: "arrow.left")
+                                    .font(.system(size: 20, weight: .medium))
+                                    .foregroundColor(.primary)
+                                    .frame(width: 44, height: 44)
+                                    .background(Color.gray.opacity(0.1))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
                             }
                         }
-                        .padding(.horizontal, 20)
                     }
+                    .padding(20)
                     
                     Spacer()
                     
@@ -143,8 +99,11 @@ struct VoxDialerView: View {
                                         .frame(width: 80, height: 80)
                                         .background(Color.gray.opacity(0.1))
                                         .clipShape(Circle())
+                                        
                                     }
-                                    .buttonStyle(PlainButtonStyle())
+                                    .supportsLongPress(normalColor: Color.gray.opacity(0.1), pressedColor: Color.gray) {
+                                        handleDialPadLongPress(button)
+                                    }
                                 }
                             }
                         }
@@ -167,88 +126,109 @@ struct VoxDialerView: View {
                     .padding(.bottom, 40)
                 }
                 .background(Color(.systemBackground))
-                .sheet(isPresented: $showingCountryPicker) {
-                    CountryPickerView(selectedCountry: $selectedCountry)
+            }
+            .onAppear {
+                self.phoneField = PhoneNumberTextFieldView(phoneNumber: self.$dialedNumber)
+            }
+            .alert("Microphone is needed to make calls, please allow microphone permissions from settings", isPresented: $showMicAlert) {
+                Button("Cancel") { }
+                Button("Settings", role: .cancel) {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
                 }
             }
+        }
+    }
+    
+    private func handleDialPadLongPress(_ button: String) {
+        if button == "0" {
+            phoneField?.textField.text = "+"
         }
     }
     
     private func handleDialPadPress(_ button: String) {
-        switch button {
-        case "*", "#":
-            dialedNumber += button
-            startCallViewModel.searchField += button
-        case "0":
-            // Handle 0 with + superscript (for international calls)
-            dialedNumber += "0"
-            startCallViewModel.searchField += "0"
-        default:
-            dialedNumber += button
-            startCallViewModel.searchField += button
+        if let text = phoneField?.textField.text {
+            phoneField?.textField.text = text + button
+        } else {
+            phoneField?.textField.text = button
         }
     }
     
     private func makeCall() {
-        let fullNumber = selectedCountry.phoneCode + dialedNumber.replacingOccurrences(of: " ", with: "")
-        print("VOXNODE: Making call to: \(fullNumber)")
-        // Implement actual call functionality here
-        startCallViewModel.interpretAndStartCall()
-        startCallViewModel.searchField = ""
-        dialedNumber = ""
-    }
-}
-
-struct CountryPickerView: View {
-    @Binding var selectedCountry: Country
-    @Environment(\.dismiss) private var dismiss
-    
-    var body: some View {
-        NavigationView {
-            List(Country.allCountries) { country in
-                Button(action: {
-                    selectedCountry = country
-                    dismiss()
-                }) {
-                    HStack {
-                        Text(country.flag)
-                            .font(.title2)
-                        
-                        VStack(alignment: .leading) {
-                            Text(country.name)
-                                .font(.system(size: 16, weight: .medium))
-                                .foregroundColor(.primary)
-                            
-                            Text(country.phoneCode)
-                                .font(.system(size: 14))
-                                .foregroundColor(.gray)
-                        }
-                        
-                        Spacer()
-                        
-                        if selectedCountry.id == country.id {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.blue)
-                        }
-                    }
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-            .navigationTitle("Select Country")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
-            }
+        guard CoreContext.shared.networkStatusIsConnected else {
+                ToastViewModel.shared.toastMessage = "Unavailable_network"
+                ToastViewModel.shared.displayToast = true
+                return
         }
+        
+        permissionManager.microphoneRequestPermission { granted in
+            guard granted else {
+                showMicAlert = true
+                return
+            }
+            
+            guard let phoneNumber = phoneField?.textField.phoneNumber else { return }
+            let fullNumber = "+" + "\(phoneNumber.countryCode)\(phoneNumber.nationalNumber)"
+            print("VOXNODE: Making call to: \(fullNumber)")
+            // Implement actual call functionality here
+            startCallViewModel.searchField = fullNumber
+            startCallViewModel.interpretAndStartCall()
+            phoneField?.textField.text = ""
+        }
+        
+        
     }
 }
 
 #Preview {
     VoxDialerView(startCallViewModel: StartCallViewModel(),
                   callViewModel: CallViewModel())
+    .environment(\.locale, .init(identifier: "en_US"))
+}
+
+struct PhoneNumberTextFieldView: UIViewRepresentable {
+    @Binding var phoneNumber: String
+    let textField = PhoneNumberTextField()
+    
+    func makeUIView(context: Context) -> PhoneNumberTextField {
+        NotificationCenter.default.addObserver(context.coordinator, selector: #selector(Coordinator.textFieldTextDidChange(_:)), name: UITextField.textDidChangeNotification, object: textField)
+        
+        //textField.addTarget(context.coordinator, action: #selector(Coordinator.onTextChange), for: .editingChanged)
+        textField.withExamplePlaceholder = true
+        textField.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        textField.withFlag = true
+        textField.withPrefix = true
+        textField.isEnabled = false
+        textField.withPrefixPrefill = false
+        return textField
+    }
+    
+    func updateUIView(_ uiView: PhoneNumberTextField, context: Context) {
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(self)
+    }
+    
+    typealias UIViewType = PhoneNumberTextField
+    
+    class Coordinator:  NSObject, UITextFieldDelegate {
+        var delegate: PhoneNumberTextFieldView
+        
+        init(_ delegate: PhoneNumberTextFieldView) {
+            self.delegate = delegate
+        }
+        
+        @objc func onTextChange(textField: UITextField) {
+            self.delegate.phoneNumber = textField.text!
+        }
+        
+        @objc func textFieldTextDidChange(_ notification: Notification) {
+            if let textField = notification.object as? UITextField {
+                self.delegate.phoneNumber = textField.text!
+            }
+        }
+    }
 }
 

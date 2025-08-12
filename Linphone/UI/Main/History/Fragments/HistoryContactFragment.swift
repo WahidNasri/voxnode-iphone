@@ -41,6 +41,10 @@ struct HistoryContactFragment: View {
 	@Binding var isShowDeleteAllHistoryPopup: Bool
 	@Binding var isShowEditContactFragment: Bool
 	@Binding var indexPage: Int
+    
+    var permissionManager = PermissionManager.shared
+    @State var showMicAlert = false
+    @State var showCameraAlert = false
 	
 	var body: some View {
 		NavigationView {
@@ -264,7 +268,7 @@ struct HistoryContactFragment: View {
 									
 									if historyViewModel.displayedCall != nil && !historyViewModel.displayedCall!.isConf {
 										Button(action: {
-											telecomManager.doCallOrJoinConf(address: historyViewModel.displayedCall!.addressLinphone)
+                                            doCall()
 										}, label: {
 											VStack {
 												HStack(alignment: .center) {
@@ -310,7 +314,7 @@ struct HistoryContactFragment: View {
 										Spacer()
 										
 										Button(action: {
-											telecomManager.doCallOrJoinConf(address: historyViewModel.displayedCall!.addressLinphone, isVideo: true)
+											doCall(isVideo: true)
 										}, label: {
 											VStack {
 												HStack(alignment: .center) {
@@ -442,10 +446,63 @@ struct HistoryContactFragment: View {
 				.onRotate { newOrientation in
 					orientation = newOrientation
 				}
+                .alert("Microphone is needed to make calls, please allow microphone permissions from settings", isPresented: $showMicAlert) {
+                    Button("Cancel") { }
+                    Button("Settings", role: .cancel) {
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(url)
+                        }
+                    }
+                }
+                .alert("Camera is needed to make video calls, please allow permissions from settings", isPresented: $showCameraAlert) {
+                    Button("Cancel") { }
+                    Button("Settings", role: .cancel) {
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(url)
+                        }
+                    }
+                }
 			}
 		}
 		.navigationViewStyle(.stack)
 	}
+    
+    func doCall(isVideo: Bool = false) {
+        guard CoreContext.shared.networkStatusIsConnected else {
+                ToastViewModel.shared.toastMessage = "Unavailable_network"
+                ToastViewModel.shared.displayToast = true
+                return
+        }
+        
+        let startCall: () -> Void = {
+            telecomManager.doCallOrJoinConf(
+                address: historyViewModel.displayedCall!.addressLinphone,
+                isVideo: isVideo
+            )
+        }
+        
+        let requestMicrophonePermission: () -> Void = {
+            permissionManager.microphoneRequestPermission { granted in
+                guard granted else {
+                    showMicAlert = true
+                    return
+                }
+                startCall()
+            }
+        }
+        
+        if isVideo {
+            permissionManager.cameraRequestPermission { granted in
+                guard granted else {
+                    showCameraAlert = true
+                    return
+                }
+                requestMicrophonePermission()
+            }
+        } else {
+            requestMicrophonePermission()
+        }
+    }
 }
 
 #Preview {

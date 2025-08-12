@@ -440,10 +440,10 @@ struct SettingsFragment: View {
 							}
 							*/
 							NavigationLink(destination: {
-								SettingsAdvancedFragment(settingsViewModel: settingsViewModel)
+                                PermissionSettingsFragment()
 							}, label: {
 								HStack(alignment: .center) {
-									Text("settings_advanced_title")
+									Text("Permissions")
 										.default_text_style_800(styleSize: 18)
 										.frame(maxWidth: .infinity, alignment: .leading)
 									
@@ -462,6 +462,30 @@ struct SettingsFragment: View {
 							.padding(.vertical, 10)
 							.padding(.horizontal, 20)
 							.background(Color.gray100)
+                            
+                            NavigationLink(destination: {
+                                SettingsAdvancedFragment(settingsViewModel: settingsViewModel)
+                            }, label: {
+                                HStack(alignment: .center) {
+                                    Text("settings_advanced_title")
+                                        .default_text_style_800(styleSize: 18)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                    Spacer()
+                                    
+                                    Image("caret-right")
+                                        .renderingMode(.template)
+                                        .resizable()
+                                        .foregroundStyle(Color.grayMain2c600)
+                                        .frame(width: 25, height: 25, alignment: .leading)
+                                        .padding(.all, 10)
+                                }
+                                .frame(maxWidth: .infinity)
+                                
+                            })
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 20)
+                            .background(Color.gray100)
 						}
 					}
 					.background(Color.gray100)

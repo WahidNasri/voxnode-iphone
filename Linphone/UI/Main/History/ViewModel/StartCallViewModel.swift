@@ -145,6 +145,9 @@ class StartCallViewModel: ObservableObject {
 		CoreContext.shared.doOnCoreQueue { core in
 			let address = core.interpretUrl(url: self.searchField, applyInternationalPrefix: true)
 			if address != nil {
+                DispatchQueue.main.async {
+                    self.searchField = ""
+                }
 				TelecomManager.shared.doCallOrJoinConf(address: address!)
 			}
 		}

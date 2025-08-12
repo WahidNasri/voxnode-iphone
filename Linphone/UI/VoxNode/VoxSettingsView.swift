@@ -77,26 +77,12 @@ struct VoxSettingsView: View {
                             color: .lightBlueMain500
                         )
                         
-                        // Balance Card
-                        InfoCard(
-                            title: "Solde",
-                            value: balance,
-                            color: .lightBlueMain500
-                        )
-                    }
-                    
-                    HStack(spacing: 16) {
                         // Language Card
                         InfoCard(
                             title: "Langue",
                             value: language,
                             color: .lightBlueMain500
                         )
-                        
-                        // Empty space for potential fourth card
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.clear)
-                            .frame(height: 80)
                     }
                 }
                 .padding(.horizontal, 20)

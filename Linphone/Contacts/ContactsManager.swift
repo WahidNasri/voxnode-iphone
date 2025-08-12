@@ -92,6 +92,7 @@ final class ContactsManager: ObservableObject {
 			
 			let store = CNContactStore()
 			store.requestAccess(for: .contacts) { (granted, error) in
+                PermissionManager.shared.setContactsStatus()
 				if let error = error {
 					print("\(#function) - failed to request access", error)
 					return

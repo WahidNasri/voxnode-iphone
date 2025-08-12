@@ -25,11 +25,11 @@ struct VoxNodeProvider: Codable, Identifiable, Hashable {
     }
     
     var primaryColor: Color {
-        return Color(hex: providerColor1) ?? .blue
+        return Color(hex: providerColor1)
     }
     
     var secondaryColor: Color {
-        return Color(hex: providerColor2) ?? .blue
+        return Color(hex: providerColor2)
     }
     
     // Hashable conformance
@@ -55,8 +55,8 @@ struct VoxLoginResult: Codable {
     let clientSipAddress: String
     let clientSipPassword: String
     let clientOutboundEnabled: Int
-    let clientBalance: Int
-    let urlRecharge: String
+    var clientBalance: Int?
+    let urlRecharge: String?
     
     var isSuccess: Bool {
         return status.lowercased() == "true"
@@ -92,43 +92,30 @@ struct VoxLoginResult: Codable {
 struct VoxLoginView: View {
     @ObservedObject var accountViewModel: AccountLoginViewModel
     
-    @State private var selectedProvider: VoxNodeProvider?
+    //@State private var selectedProvider: VoxNodeProvider?
     @State private var providers: [VoxNodeProvider] = []
     @State private var isPasswordVisible = false
     @State private var isDropdownExpanded = false
-    @State private var isLoading = true
+    //@State private var isLoading = false
     @State private var errorMessage: String?
     @State private var isLoggingIn = false
     
     // Computed properties to simplify complex expressions
     private var logoColor: Color {
-        return selectedProvider?.primaryColor ?? Color.lightBlueMain300
+        Color.lightBlueMain500
     }
     
     private var titleColor: Color {
-        return selectedProvider?.primaryColor ?? .blue
+        Color.lightBlueMain500
     }
     
     private var iconColor: Color {
-        return selectedProvider?.primaryColor ?? .blue
+        Color.lightBlueMain500
     }
     
     private var iconBackgroundColor: Color {
-        return (selectedProvider?.primaryColor ?? .blue).opacity(0.1)
+        Color.lightBlueMain500.opacity(0.1)
     }
-    
-    private var selectedProviderName: String {
-        return selectedProvider?.providerName ?? "Select Provider"
-    }
-    
-    private var isProviderSelected: Bool {
-        return selectedProvider != nil
-    }
-    
-    private var enabledProviders: [VoxNodeProvider] {
-        return providers.filter { $0.isEnabled }
-    }
-    
     
     var body: some View {
         ZStack {
@@ -182,45 +169,6 @@ struct VoxLoginView: View {
                 
                 // Input Fields
                 VStack(spacing: 16) {
-                    // Provider Dropdown
-                    ZStack {
-                        // Main dropdown button
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.white)
-                                .shadow(color: .gray.opacity(0.2), radius: 4, x: 0, y: 2)
-                            
-                            HStack {
-                                if isLoading {
-                                    ProgressView()
-                                        .scaleEffect(0.8)
-                                        .padding(.leading, 16)
-                                } else {
-                                    Text(selectedProviderName)
-                                        .foregroundColor(isProviderSelected ? .primary : .gray)
-                                        .padding(.leading, 16)
-                                }
-                                
-                                Spacer()
-                                
-                                if !isLoading {
-                                    Button(action: {
-                                        withAnimation(.easeInOut(duration: 0.2)) {
-                                            isDropdownExpanded.toggle()
-                                        }
-                                    }) {
-                                        Image(systemName: "chevron.down")
-                                            .foregroundColor(iconColor)
-                                            .rotationEffect(.degrees(isDropdownExpanded ? 180 : 0))
-                                            .padding(.trailing, 16)
-                                    }
-                                }
-                            }
-                            .frame(height: 50)
-                        }
-                        .frame(height: 50)
-                    }
-                    .frame(height: 50)
                     
                     // Email Field
                     HStack {
@@ -322,45 +270,12 @@ struct VoxLoginView: View {
                     )
                 }
                 .padding(.horizontal, 24)
-                .disabled(!isProviderSelected || isLoading || isLoggingIn)
-                .opacity((!isProviderSelected || isLoading || isLoggingIn) ? 0.6 : 1.0)
+                .disabled(isLoggingIn)
+                .opacity((isLoggingIn) ? 0.6 : 1.0)
                 
                 Spacer()
             }
             
-            // Dropdown overlay positioned absolutely
-            if isDropdownExpanded && !isLoading {
-                VStack {
-                    Spacer()
-                    
-                    VStack(spacing: 0) {
-                        ForEach(enabledProviders) { provider in
-                            Button(action: {
-                                selectedProvider = provider
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    isDropdownExpanded = false
-                                }
-                            }) {
-                                HStack {
-                                    Text(provider.providerName)
-                                        .foregroundColor(.primary)
-                                        .padding(.leading, 16)
-                                    Spacer()
-                                }
-                                .frame(height: 40)
-                                .background(selectedProvider?.providerId == provider.providerId ? provider.primaryColor.opacity(0.1) : Color.white)
-                            }
-                        }
-                    }
-                    .background(Color.white)
-                    .cornerRadius(8)
-                    .shadow(color: .gray.opacity(0.3), radius: 4, x: 0, y: 2)
-                    .padding(.horizontal, 24)
-                    
-                    Spacer()
-                }
-                .zIndex(9999)
-            }
         }
         .onTapGesture {
             // Dismiss dropdown when tapping outside
@@ -371,17 +286,17 @@ struct VoxLoginView: View {
             }
         }
         .onAppear {
-            fetchProviders()
+            //fetchProviders()
         }
     }
     
     // MARK: - API Functions
     
     private func performVoxLogin() {
-        guard let selectedProvider = selectedProvider else {
-            errorMessage = "Please select a provider"
-            return
-        }
+//        guard let selectedProvider = selectedProvider else {
+//            errorMessage = "Please select a provider"
+//            return
+//        }
         
         guard !accountViewModel.username.isEmpty else {
             errorMessage = "Please enter your email"
@@ -407,7 +322,7 @@ struct VoxLoginView: View {
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
         // Create URL encoded body
-        let bodyString = "email=\(accountViewModel.username.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&password=\(accountViewModel.passwd.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&providerId=\(selectedProvider.providerId)"
+        let bodyString = "email=\(accountViewModel.username.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&password=\(accountViewModel.passwd.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&providerId=2"
         request.httpBody = bodyString.data(using: .utf8)
         
         URLSession.shared.dataTask(with: request) { data, response, error in
@@ -450,49 +365,6 @@ struct VoxLoginView: View {
         accountViewModel.displayName = loginResult.sipUserName
         
         accountViewModel.login()
-    }
-    
-    private func fetchProviders() {
-        isLoading = true
-        errorMessage = nil
-        
-        guard let url = URL(string: "https://api3.voxnode.com/getProviders") else {
-            errorMessage = "Invalid URL"
-            isLoading = false
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                isLoading = false
-                
-                if let error = error {
-                    errorMessage = "Network error: \(error.localizedDescription)"
-                    return
-                }
-                
-                guard let data = data else {
-                    errorMessage = "No data received"
-                    return
-                }
-                
-                do {
-                    let providers = try JSONDecoder().decode([VoxNodeProvider].self, from: data)
-                    self.providers = providers
-                    
-                    // Set default provider if available
-                    if let defaultProvider = providers.first(where: { $0.isEnabled }) {
-                        self.selectedProvider = defaultProvider
-                    }
-                } catch {
-                    errorMessage = "Failed to parse response: \(error.localizedDescription)"
-                }
-            }
-        }.resume()
     }
 }
 

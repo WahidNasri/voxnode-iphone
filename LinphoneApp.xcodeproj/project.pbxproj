@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		371D3C712E48B62500B838CC /* SupportsLongPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D3C702E48B62400B838CC /* SupportsLongPress.swift */; };
+		371D3C732E48E49D00B838CC /* PermissionSettingsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D3C722E48E49900B838CC /* PermissionSettingsFragment.swift */; };
+		37E1AB952E44B9B8001B26A4 /* PhoneNumberKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 37E1AB942E44B9B8001B26A4 /* PhoneNumberKit-Dynamic */; };
+		37E1AB962E44E2BA001B26A4 /* PhoneNumberKit-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 37E1AB942E44B9B8001B26A4 /* PhoneNumberKit-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		4ED1F0A881A9ACB5977A8987 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		660AAF7F2B839272004C0FA6 /* msgNotificationService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 660AAF7B2B839271004C0FA6 /* msgNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		660D8A712B517D260092694D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 660D8A702B517D260092694D /* GoogleService-Info.plist */; };
@@ -211,6 +215,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		37E1AB972E44E2BA001B26A4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				37E1AB962E44E2BA001B26A4 /* PhoneNumberKit-Dynamic in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		660AAF802B839272004C0FA6 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -225,6 +240,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		371D3C702E48B62400B838CC /* SupportsLongPress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportsLongPress.swift; sourceTree = "<group>"; };
+		371D3C722E48E49900B838CC /* PermissionSettingsFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionSettingsFragment.swift; sourceTree = "<group>"; };
 		660AAF7B2B839271004C0FA6 /* msgNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = msgNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		660AAF842B8392E0004C0FA6 /* msgNotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = msgNotificationService.entitlements; sourceTree = "<group>"; };
 		660D8A702B517D260092694D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -429,6 +446,7 @@
 				D7D5AD7F2DD34F0E00016721 /* AppAuth in Frameworks */,
 				C618BF562D75CA03005A00E0 /* linphonesw in Frameworks */,
 				D7D5AD832DD34F2300016721 /* FirebaseCrashlytics in Frameworks */,
+				37E1AB952E44B9B8001B26A4 /* PhoneNumberKit-Dynamic in Frameworks */,
 				D7D5AD812DD34F1A00016721 /* FirebaseAnalytics in Frameworks */,
 				4ED1F0A881A9ACB5977A8987 /* (null) in Frameworks */,
 			);
@@ -552,6 +570,7 @@
 		D717071C2AC591EF0037746F /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				371D3C702E48B62400B838CC /* SupportsLongPress.swift */,
 				D717A10D2CEB770D00849D92 /* ShareSheetController.swift */,
 				66C491F72B24D25A00CEA16D /* Extensions */,
 				66C491FC2B24D36500CEA16D /* AudioRouteUtils.swift */,
@@ -990,6 +1009,7 @@
 		D7DC096B2CFA192F00A6D47C /* Fragments */ = {
 			isa = PBXGroup;
 			children = (
+				371D3C722E48E49900B838CC /* PermissionSettingsFragment.swift */,
 				D78607702D36CB87009E6A7E /* SettingsAdvancedFragment.swift */,
 				D732C38B2D311D2100F78100 /* SettingsFragment.swift */,
 				D7C5003F2D27F16900DD53EC /* AccountSettingsFragment.swift */,
@@ -1045,6 +1065,7 @@
 				660AAF802B839272004C0FA6 /* Embed Foundation Extensions */,
 				D719ABB12ABC67BF00B41C10 /* Resources */,
 				D72F04F52DDB2CB800F4C713 /* ShellScript */,
+				37E1AB972E44E2BA001B26A4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1091,6 +1112,7 @@
 				C618BF542D75CA03005A00E0 /* XCRemoteSwiftPackageReference "linphone-sdk-swift-ios" */,
 				D7D5AD7B2DD34E4D00016721 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 				D7D5AD7C2DD34E7C00016721 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				37E1AB932E44B9B8001B26A4 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
 			);
 			productRefGroup = D719ABB42ABC67BF00B41C10 /* Products */;
 			projectDirPath = "";
@@ -1263,6 +1285,7 @@
 				D79F2D0A2C47F4BF0038FA07 /* TouchFeedback.swift in Sources */,
 				D78E06282BE3811D00CE3783 /* CallStatsModel.swift in Sources */,
 				D7E6D0512AEBDBD500A57AAF /* ContactsListBottomSheet.swift in Sources */,
+				371D3C732E48E49D00B838CC /* PermissionSettingsFragment.swift in Sources */,
 				D75759322B56D40900E7AC10 /* ZRTPPopup.swift in Sources */,
 				D78E062E2BEA69F400CE3783 /* AudioRouteBottomSheet.swift in Sources */,
 				D7A0ACBB2C415D630043AE79 /* StartGroupConversationFragment.swift in Sources */,
@@ -1289,6 +1312,7 @@
 				D7FB55112AD447FD00A5AB15 /* RegisterFragment.swift in Sources */,
 				D7E6ADF32B9875C20009A2BC /* Message.swift in Sources */,
 				D7C48DF62AFCDF4700D938CB /* ContactInnerActionsFragment.swift in Sources */,
+				371D3C712E48B62500B838CC /* SupportsLongPress.swift in Sources */,
 				D72343322ACEFF58009AA24E /* QRScannerController.swift in Sources */,
 				662B69D92B25DE18007118BF /* TelecomManager.swift in Sources */,
 				D72343342ACEFFC3009AA24E /* QRScanner.swift in Sources */,
@@ -1699,6 +1723,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		37E1AB932E44B9B8001B26A4 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.4;
+			};
+		};
 		C618BF542D75CA03005A00E0 /* XCRemoteSwiftPackageReference "linphone-sdk-swift-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://gitlab.linphone.org/BC/public/linphone-sdk-swift-ios.git";
@@ -1726,6 +1758,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		37E1AB942E44B9B8001B26A4 /* PhoneNumberKit-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 37E1AB932E44B9B8001B26A4 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
+			productName = "PhoneNumberKit-Dynamic";
+		};
 		C618BF552D75CA03005A00E0 /* linphonesw */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C618BF542D75CA03005A00E0 /* XCRemoteSwiftPackageReference "linphone-sdk-swift-ios" */;
