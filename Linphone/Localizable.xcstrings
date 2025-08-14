@@ -1178,6 +1178,7 @@
       }
     },
     "call_action_attended_transfer" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1194,6 +1195,7 @@
       }
     },
     "call_action_blind_transfer" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1226,6 +1228,7 @@
       }
     },
     "call_action_go_to_calls_list" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1323,6 +1326,7 @@
       }
     },
     "call_action_show_messages" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1339,6 +1343,7 @@
       }
     },
     "call_action_start_new_call" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2012,6 +2017,7 @@
 
     },
     "conference_action_screen_sharing" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2028,6 +2034,7 @@
       }
     },
     "conference_action_show_participants" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3570,6 +3577,9 @@
           }
         }
       }
+    },
+    "counterToMinutes" : {
+
     },
     "debug_logs_copied_to_clipboard_toast" : {
       "localizations" : {

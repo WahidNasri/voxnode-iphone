@@ -59,7 +59,7 @@ struct CallView: View {
 	@State var angleDegree = 0.0
 	@State var showingDialer = false
 	@State var minBottomSheetHeight: CGFloat = 0.16
-	@State var maxBottomSheetHeight: CGFloat = 0.5
+	@State var maxBottomSheetHeight: CGFloat = 0.35
 	@State private var pointingUp: CGFloat = 0.0
 	@State private var currentOffset: CGFloat = 0.0
 	@State var displayVideo = false
@@ -156,7 +156,8 @@ struct CallView: View {
 							)
 							.presentationDetents([.medium])
 						}
-				} else {
+				}
+                else {
 					innerView(geometry: geo)
 						.halfSheet(showSheet: $mediaEncryptedSheet) {
 							MediaEncryptedSheetBottomSheet(callViewModel: callViewModel, mediaEncryptedSheet: $mediaEncryptedSheet)
@@ -502,7 +503,7 @@ struct CallView: View {
 						}
 						
 						if callViewModel.avatarModel != nil {
-							Avatar(contactAvatarModel: callViewModel.avatarModel!, avatarSize: 200, hidePresence: true)
+                            Avatar(contactAvatarModel: callViewModel.avatarModel!, avatarSize: 200, hidePresence: true, showOnlyPhoto: true)
 						}
 						
 						if callViewModel.isRemoteDeviceTrusted {
@@ -1913,849 +1914,304 @@ struct CallView: View {
 	
 	// swiftlint:disable:next cyclomatic_complexity
 	func bottomSheetContent(geo: GeometryProxy) -> some View {
-		GeometryReader { _ in
-			VStack(spacing: 0) {
-				Button {
-					withAnimation {
-						if currentOffset < (maxBottomSheetHeight * geo.size.height) {
-							currentOffset = (maxBottomSheetHeight * geo.size.height)
-						} else {
-							currentOffset = (minBottomSheetHeight * geo.size.height > 80 ? minBottomSheetHeight * geo.size.height : 78)
-						}
-						
-						pointingUp = -(((currentOffset - (minBottomSheetHeight * geo.size.height > 80 ? minBottomSheetHeight * geo.size.height : 78)) / ((maxBottomSheetHeight * geo.size.height) - (minBottomSheetHeight * geo.size.height > 80 ? minBottomSheetHeight * geo.size.height : 78))) - 0.5) * 2
-					}
-				} label: {
-					ChevronShape(pointingUp: pointingUp)
-						.stroke(style: StrokeStyle(lineWidth: 4, lineCap: .round))
-						.frame(width: 40, height: 6)
-						.foregroundStyle(.white)
-						.contentShape(Rectangle())
-						.padding(.top, 15)
-				}
-				
-				HStack(spacing: 12) {
-					Button {
-						callViewModel.terminateCall()
-					} label: {
-						Image("phone-disconnect")
-							.renderingMode(.template)
-							.resizable()
-							.foregroundStyle(.white)
-							.frame(width: 32, height: 32)
-						
-					}
-					.frame(width: buttonSize == 60 ? 90 : 70, height: buttonSize)
-					.background(Color.redDanger500)
-					.cornerRadius(40)
-					
-					Spacer()
-					
-					Button {
-						if optionsChangeLayout == 3 {
-							optionsChangeLayout = 2
-							callViewModel.toggleVideoMode(isAudioOnlyMode: false)
-						} else {
-							callViewModel.displayMyVideo()
-						}
-					} label: {
-						HStack {
-							Image(callViewModel.videoDisplayed ? "video-camera" : "video-camera-slash")
-								.renderingMode(.template)
-								.resizable()
-								.foregroundStyle((callViewModel.isPaused || telecomManager.isPausedByRemote) ? Color.gray500 : .white)
-								.frame(width: 32, height: 32)
-						}
-					}
-					.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-					.frame(width: buttonSize, height: buttonSize)
-					.background((callViewModel.isPaused || telecomManager.isPausedByRemote) ? .white : Color.gray500)
-					.cornerRadius(40)
-					.disabled(callViewModel.isPaused || telecomManager.isPausedByRemote)
-					
-					Button {
-						callViewModel.toggleMuteMicrophone()
-					} label: {
-						HStack {
-							Image(callViewModel.micMutted ? "microphone-slash" : "microphone")
-							 .renderingMode(.template)
-							 .resizable()
-							 .foregroundStyle(.white)
-							 .frame(width: 32, height: 32)
-						}
-					}
-					.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-					.frame(width: buttonSize, height: buttonSize)
-					.background(callViewModel.micMutted ? Color.redDanger500 : Color.gray500)
-					.cornerRadius(40)
-					
-					Button {
-						if AVAudioSession.sharedInstance().availableInputs != nil
-							&& !AVAudioSession.sharedInstance().availableInputs!.filter({ $0.portType.rawValue.contains("Bluetooth") }).isEmpty {
-							
-							DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-								audioRouteSheet = true
-							}
-						} else {
-							do {
-								try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.sharedInstance().currentRoute.outputs.filter({ $0.portType.rawValue == "Speaker" }).isEmpty ? .speaker : .none)
-							} catch _ {
-								
-							}
-						}
-						
-					} label: {
-						HStack {
-							Image(imageAudioRoute)
-							 .renderingMode(.template)
-							 .resizable()
-							 .foregroundStyle(.white)
-							 .frame(width: 32, height: 32)
-							 .onAppear(perform: getAudioRouteImage)
-							 .onReceive(pub) { _ in
-								 self.getAudioRouteImage()
-							 }
-						}
-					}
-					.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-					.frame(width: buttonSize, height: buttonSize)
-					.background(Color.gray500)
-					.cornerRadius(40)
-				}
-				.frame(height: geo.size.height * 0.15)
-				.padding(.horizontal, 20)
-				.padding(.top, -5)
-				
-				if orientation != .landscapeLeft && orientation != .landscapeRight {
-					HStack(spacing: 0) {
-						if callViewModel.isOneOneCall {
-							VStack {
-								Button {
-									if callViewModel.callsCounter < 2 {
-										withAnimation {
-											callViewModel.isTransferInsteadCall = true
-											MagicSearchSingleton.shared.searchForSuggestions()
-											isShowStartCallFragment.toggle()
-										}
-										
-										DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-											telecomManager.callStarted = false
-											DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-												telecomManager.callStarted = true
-											}
-										}
-									} else {
-										callViewModel.transferClicked()
-									}
-								} label: {
-									HStack {
-										Image("phone-transfer")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								Text(callViewModel.callsCounter < 2 ? "call_action_blind_transfer" : "call_action_attended_transfer")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-							
-							VStack {
-								Button {
-									withAnimation {
-										MagicSearchSingleton.shared.searchForSuggestions()
-										isShowStartCallFragment.toggle()
-									}
-									
-									DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-										telecomManager.callStarted = false
-										DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-											telecomManager.callStarted = true
-										}
-									}
-								} label: {
-									HStack {
-										Image("phone-plus")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								Text("call_action_start_new_call")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-						} else {
-							VStack {
-								Button {
-								} label: {
-									HStack {
-										Image("screencast")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(Color.gray500)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(.white)
-								.cornerRadius(40)
-								.disabled(true)
-								
-								Text("conference_action_screen_sharing")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-							
-							VStack {
-								Button {
-									withAnimation {
-										isShowParticipantsListFragment.toggle()
-									}
-								} label: {
-									HStack {
-										Image("users")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								Text("conference_action_show_participants")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-						}
-						VStack {
-							ZStack {
-								Button {
-									callViewModel.getCallsList()
-									withAnimation {
-										isShowCallsListFragment.toggle()
-									}
-									
-									DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-										telecomManager.callStarted = false
-										DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-											telecomManager.callStarted = true
-										}
-									}
-								} label: {
-									HStack {
-										Image("phone-list")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								if callViewModel.callsCounter > 1 {
-									VStack {
-										HStack {
-											Spacer()
-											
-											VStack {
-												Text("\(callViewModel.callsCounter)")
-													.foregroundStyle(.white)
-													.default_text_style(styleSize: 15)
-											}
-											.frame(width: 20, height: 20)
-											.background(Color.redDanger500)
-											.cornerRadius(10)
-										}
-										
-										Spacer()
-									}
-									.frame(width: buttonSize, height: buttonSize)
-								}
-							}
-							
-							Text("call_action_go_to_calls_list")
-								.foregroundStyle(.white)
-								.default_text_style(styleSize: 15)
-						}
-						.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-						
-						if callViewModel.isOneOneCall {
-							VStack {
-								Button {
-									showingDialer.toggle()
-									DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-										telecomManager.callStarted = false
-										DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-											telecomManager.callStarted = true
-										}
-									}
-								} label: {
-									HStack {
-										Image("dialer")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								Text("call_action_show_dialer")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-						} else {
-							VStack {
-								Button {
-									changeLayoutSheet = true
-								} label: {
-									HStack {
-										Image("notebook")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								Text("call_action_change_layout")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-						}
-					}
-					.frame(height: geo.size.height * 0.15)
-					
-					HStack(spacing: 0) {
-						VStack {
-							Button {
-								callViewModel.createConversation()
-							} label: {
-								HStack {
-									if !callViewModel.operationInProgress {
-										Image("chat-teardrop-text")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									} else {
-										ProgressView()
-											.controlSize(.mini)
-											.progressViewStyle(CircularProgressViewStyle(tint: .white))
-											.frame(width: 32, height: 32, alignment: .center)
-											.onDisappear {
-												if callViewModel.displayedConversation != nil {
-													indexPage = 2
-													self.conversationViewModel.changeDisplayedChatRoom(conversationModel: callViewModel.displayedConversation!)
-													callViewModel.displayedConversation = nil
-													withAnimation {
-														telecomManager.callDisplayed = false
-													}
-												}
-											}
-									}
-								}
-							}
-							.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-							.frame(width: buttonSize, height: buttonSize)
-							.background(Color.gray500)
-							.cornerRadius(40)
-							
-							Text("call_action_show_messages")
-								.foregroundStyle(.white)
-								.default_text_style(styleSize: 15)
-						}
-						.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-						
-						VStack {
-							Button {
-								callViewModel.togglePause()
-							} label: {
-								HStack {
-									Image(callViewModel.isPaused ? "play" : "pause")
-										.renderingMode(.template)
-										.resizable()
-										.foregroundStyle(telecomManager.isPausedByRemote ? Color.gray500 : .white)
-										.frame(width: 32, height: 32)
-								}
-							}
-							.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-							.frame(width: buttonSize, height: buttonSize)
-							.background(telecomManager.isPausedByRemote ? .white : (callViewModel.isPaused ? Color.greenSuccess500 : Color.gray500))
-							.cornerRadius(40)
-							.disabled(telecomManager.isPausedByRemote)
-							
-							Text("call_action_pause_call")
-								.foregroundStyle(.white)
-								.default_text_style(styleSize: 15)
-						}
-						.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-						
-						if callViewModel.isOneOneCall {
-							VStack {
-								Button {
-									callViewModel.toggleRecording()
-								} label: {
-									HStack {
-										Image("record-fill")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle((callViewModel.isPaused || telecomManager.isPausedByRemote) ? Color.gray500 : .white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background((callViewModel.isPaused || telecomManager.isPausedByRemote) ? .white : (callViewModel.isRecording ? Color.redDanger500 : Color.gray500))
-                                .clipShape(.circle)
-                                .scaleEffect(callViewModel.isRecording ? 1.1 : 1.0)
-                                .opacity(callViewModel.isRecording ? 0.8 : 1.0)
-                                .animation(
-                                    Animation.easeInOut(duration: 0.8)
-                                        .repeatForever(autoreverses: true),
-                                    value: callViewModel.isRecording
-                                )
-								.disabled(callViewModel.isPaused || telecomManager.isPausedByRemote)
-								
-								Text("call_action_record_call")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-						} else {
-							VStack {
-								Button {
-								} label: {
-									HStack {
-										Image("record-fill")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(Color.gray500)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(.white)
-								.cornerRadius(40)
-								.disabled(true)
-								
-								Text("call_action_record_call")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-						}
-						
-						VStack {
-							Button {
-							} label: {
-								HStack {
-									Image("video-camera")
-										.renderingMode(.template)
-										.resizable()
-										.foregroundStyle(.white)
-										.frame(width: 32, height: 32)
-								}
-							}
-							.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-							.frame(width: buttonSize, height: buttonSize)
-							.background(Color.gray500)
-							.cornerRadius(40)
-							
-							Text("call_action_change_layout")
-								.foregroundStyle(.white)
-								.default_text_style(styleSize: 15)
-						}
-						.frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
-						.hidden()
-					}
-					.frame(height: geo.size.height * 0.15)
-				} else {
-					HStack {
-						if callViewModel.isOneOneCall {
-							VStack {
-								Button {
-									if callViewModel.callsCounter < 2 {
-										withAnimation {
-											callViewModel.isTransferInsteadCall = true
-											MagicSearchSingleton.shared.searchForSuggestions()
-											isShowStartCallFragment.toggle()
-										}
-										
-										DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-											telecomManager.callStarted = false
-											DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-												telecomManager.callStarted = true
-											}
-										}
-									} else {
-										callViewModel.transferClicked()
-									}
-								} label: {
-									HStack {
-										Image("phone-transfer")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								Text(callViewModel.callsCounter < 2 ? "call_action_blind_transfer" : "call_action_attended_transfer")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
-							
-							VStack {
-								Button {
-									withAnimation {
-										MagicSearchSingleton.shared.searchForSuggestions()
-										isShowStartCallFragment.toggle()
-									}
-									
-									DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-										telecomManager.callStarted = false
-										DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-											telecomManager.callStarted = true
-										}
-									}
-								} label: {
-									HStack {
-										Image("phone-plus")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								Text("call_action_start_new_call")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
-						} else {
-							VStack {
-								VStack {
-									Button {
-									} label: {
-										HStack {
-											Image("screencast")
-												.renderingMode(.template)
-												.resizable()
-												.foregroundStyle(Color.gray500)
-												.frame(width: 32, height: 32)
-										}
-									}
-									.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-									.frame(width: buttonSize, height: buttonSize)
-									.background(.white)
-									.cornerRadius(40)
-									.disabled(true)
-									
-									Text("conference_action_screen_sharing")
-										.foregroundStyle(.white)
-										.default_text_style(styleSize: 15)
-								}
-							}
-							.frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
-							
-							VStack {
-								Button {
-									withAnimation {
-										isShowParticipantsListFragment.toggle()
-									}
-								} label: {
-									HStack {
-										Image("users")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								Text("conference_action_show_participants")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
-						}
-						
-						VStack {
-							ZStack {
-								Button {
-									callViewModel.getCallsList()
-									withAnimation {
-										isShowCallsListFragment.toggle()
-									}
-									
-									DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-										telecomManager.callStarted = false
-										DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-											telecomManager.callStarted = true
-										}
-									}
-								} label: {
-									HStack {
-										Image("phone-list")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								if callViewModel.callsCounter > 1 {
-									VStack {
-										HStack {
-											Spacer()
-											
-											VStack {
-												Text("\(callViewModel.callsCounter)")
-													.foregroundStyle(.white)
-													.default_text_style(styleSize: 15)
-											}
-											.frame(width: 20, height: 20)
-											.background(Color.redDanger500)
-											.cornerRadius(10)
-										}
-										
-										Spacer()
-									}
-									.frame(width: buttonSize, height: buttonSize)
-								}
-							}
-							
-							Text("call_action_go_to_calls_list")
-								.foregroundStyle(.white)
-								.default_text_style(styleSize: 15)
-						}
-						.frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
-						
-						if callViewModel.isOneOneCall {
-							VStack {
-								Button {
-									showingDialer.toggle()
-									DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-										telecomManager.callStarted = false
-										DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-											telecomManager.callStarted = true
-										}
-									}
-								} label: {
-									HStack {
-										Image("dialer")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								Text("call_action_show_dialer")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
-						} else {
-							VStack {
-								Button {
-									changeLayoutSheet = true
-								} label: {
-									HStack {
-										Image("notebook")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(Color.gray500)
-								.cornerRadius(40)
-								
-								Text("call_action_change_layout")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
-						}
-						
-						VStack {
-							Button {
-								callViewModel.createConversation()
-							} label: {
-								HStack {
-									if !callViewModel.operationInProgress {
-										Image("chat-teardrop-text")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(.white)
-											.frame(width: 32, height: 32)
-									} else {
-										ProgressView()
-											.controlSize(.mini)
-											.progressViewStyle(CircularProgressViewStyle(tint: .white))
-											.frame(width: 32, height: 32, alignment: .center)
-											.onDisappear {
-												if callViewModel.displayedConversation != nil {
-													conversationViewModel.changeDisplayedChatRoom(conversationModel: callViewModel.displayedConversation!)
-												}
-											}
-									}
-								}
-							}
-							.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-							.frame(width: buttonSize, height: buttonSize)
-							.background(Color.gray500)
-							.cornerRadius(40)
-							
-							Text("call_action_show_messages")
-								.foregroundStyle(.white)
-								.default_text_style(styleSize: 15)
-						}
-						.frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
-						
-						VStack {
-							Button {
-								callViewModel.togglePause()
-							} label: {
-								HStack {
-									Image(callViewModel.isPaused ? "play" : "pause")
-										.renderingMode(.template)
-										.resizable()
-										.foregroundStyle(telecomManager.isPausedByRemote ? Color.gray500 : .white)
-										.frame(width: 32, height: 32)
-								}
-							}
-							.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-							.frame(width: buttonSize, height: buttonSize)
-							.background(telecomManager.isPausedByRemote ? .white : (callViewModel.isPaused ? Color.greenSuccess500 : Color.gray500))
-							.cornerRadius(40)
-							.disabled(telecomManager.isPausedByRemote)
-							
-							Text("call_action_pause_call")
-								.foregroundStyle(.white)
-								.default_text_style(styleSize: 15)
-						}
-						.frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
-						
-						if callViewModel.isOneOneCall {
-							VStack {
-								Button {
-									callViewModel.toggleRecording()
-								} label: {
-									HStack {
-										Image("record-fill")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle((callViewModel.isPaused || telecomManager.isPausedByRemote) ? Color.gray500 : .white)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background((callViewModel.isPaused || telecomManager.isPausedByRemote) ? .white : (callViewModel.isRecording ? Color.redDanger500 : Color.gray500))
-								.cornerRadius(40)
-								.disabled(callViewModel.isPaused || telecomManager.isPausedByRemote)
-								
-								Text("call_action_record_call")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
-						} else {
-							VStack {
-								Button {
-								} label: {
-									HStack {
-										Image("record-fill")
-											.renderingMode(.template)
-											.resizable()
-											.foregroundStyle(Color.gray500)
-											.frame(width: 32, height: 32)
-									}
-								}
-								.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
-								.frame(width: buttonSize, height: buttonSize)
-								.background(.white)
-								.cornerRadius(40)
-								.disabled(true)
-								
-								Text("call_action_record_call")
-									.foregroundStyle(.white)
-									.default_text_style(styleSize: 15)
-							}
-							.frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
-						}
-					}
-					.frame(height: geo.size.height * 0.15)
-					.padding(.horizontal, 20)
-					.padding(.top, 30)
-				}
-				
-				Spacer()
-			}
-			.background(Color.gray600)
-			.frame(maxHeight: .infinity, alignment: .top)
-		}
+		
+        VStack(spacing: 0) {
+            Button {
+                withAnimation {
+                    if currentOffset < (maxBottomSheetHeight * geo.size.height) {
+                        currentOffset = (maxBottomSheetHeight * geo.size.height)
+                    } else {
+                        currentOffset = (minBottomSheetHeight * geo.size.height > 80 ? minBottomSheetHeight * geo.size.height : 78)
+                    }
+                    
+                    pointingUp = -(((currentOffset - (minBottomSheetHeight * geo.size.height > 80 ? minBottomSheetHeight * geo.size.height : 78)) / ((maxBottomSheetHeight * geo.size.height) - (minBottomSheetHeight * geo.size.height > 80 ? minBottomSheetHeight * geo.size.height : 78))) - 0.5) * 2
+                }
+            } label: {
+                ChevronShape(pointingUp: pointingUp)
+                    .stroke(style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                    .frame(width: 40, height: 6)
+                    .foregroundStyle(.white)
+                    .contentShape(Rectangle())
+                    .padding(.top, 15)
+            }
+            
+            HStack(spacing: 0) {
+                
+                Button {
+                    callViewModel.toggleMuteMicrophone()
+                } label: {
+                    Image(callViewModel.micMutted ? "microphone-slash" : "microphone")
+                        .renderingMode(.template)
+                        .resizable()
+                        .foregroundStyle(.white)
+                        .frame(width: 32, height: 32)
+                        .frame(width: buttonSize, height: buttonSize)
+                        .background(callViewModel.micMutted ? Color.redDanger500 : Color.gray500)
+                }
+                .clipShape(.circle)
+                .frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
+                
+                Button {
+                    callViewModel.terminateCall()
+                } label: {
+                    Image("phone-disconnect")
+                        .renderingMode(.template)
+                        .resizable()
+                        .foregroundStyle(.white)
+                        .frame(width: 32, height: 32)
+                        .frame(width: buttonSize, height: buttonSize)
+                        .background(Color.redDanger500)
+                    
+                }
+                .clipShape(.circle)
+                .frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
+                
+                Button {
+                    if AVAudioSession.sharedInstance().availableInputs != nil
+                        && !AVAudioSession.sharedInstance().availableInputs!.filter({ $0.portType.rawValue.contains("Bluetooth") }).isEmpty {
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            audioRouteSheet = true
+                        }
+                    } else {
+                        do {
+                            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.sharedInstance().currentRoute.outputs.filter({ $0.portType.rawValue == "Speaker" }).isEmpty ? .speaker : .none)
+                        } catch _ {
+                            
+                        }
+                    }
+                    
+                } label: {
+                    HStack {
+                        Image(imageAudioRoute)
+                            .renderingMode(.template)
+                            .resizable()
+                            .foregroundStyle(.white)
+                            .frame(width: 32, height: 32)
+                            .frame(width: buttonSize, height: buttonSize)
+                            .background(Color.gray500)
+                            .onAppear(perform: getAudioRouteImage)
+                            .onReceive(pub) { _ in
+                                self.getAudioRouteImage()
+                            }
+                    }
+                }
+                .clipShape(.circle)
+                .frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
+            }
+            .frame(height: geo.size.height * 0.15)
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 20)
+            .padding(.top, -5)
+            
+            if orientation != .landscapeLeft && orientation != .landscapeRight {
+                HStack(spacing: 0) {
+                    
+                    VStack {
+                        Button {
+                            showingDialer.toggle()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                telecomManager.callStarted = false
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    telecomManager.callStarted = true
+                                }
+                            }
+                        } label: {
+                            Image("dialer")
+                                .renderingMode(.template)
+                                .resizable()
+                                .foregroundStyle(.white)
+                                .frame(width: 32, height: 32)
+                                .frame(width: buttonSize, height: buttonSize)
+                                .background(Color.gray500)
+                        }
+                        .clipShape(.circle)
+                        
+                        Text("call_action_show_dialer")
+                            .foregroundStyle(.white)
+                            .default_text_style(styleSize: 15)
+                    }
+                    .frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
+                    
+                    VStack {
+                        Button {
+                            callViewModel.togglePause()
+                        } label: {
+                            Image(callViewModel.isPaused ? "play" : "pause")
+                                .renderingMode(.template)
+                                .resizable()
+                                .foregroundStyle(telecomManager.isPausedByRemote ? Color.gray500 : .white)
+                                .frame(width: 32, height: 32)
+                                .frame(width: buttonSize, height: buttonSize)
+                                .background(telecomManager.isPausedByRemote ? .white : (callViewModel.isPaused ? Color.greenSuccess500 : Color.gray500))
+                        }
+                        .clipShape(.circle)
+                        .disabled(telecomManager.isPausedByRemote)
+                        
+                        Text("call_action_pause_call")
+                            .foregroundStyle(.white)
+                            .default_text_style(styleSize: 15)
+                    }
+                    .frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
+                    
+                    VStack {
+                        Button {
+                            if callViewModel.isOneOneCall {
+                                callViewModel.toggleRecording()
+                            }
+                        } label: {
+                            Image("record-fill")
+                                .renderingMode(.template)
+                                .resizable()
+                                .foregroundStyle((callViewModel.isPaused || telecomManager.isPausedByRemote) ? Color.gray500 : .white)
+                                .frame(width: 32, height: 32)
+                                .frame(width: buttonSize, height: buttonSize)
+                                .background((callViewModel.isPaused || telecomManager.isPausedByRemote) ? .white : (callViewModel.isRecording ? Color.redDanger500 : Color.gray500))
+                        }
+                        //.buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
+                        .clipShape(.circle)
+                        .scaleEffect(callViewModel.isRecording ? 1.1 : 1.0)
+                        .opacity(callViewModel.isRecording ? 0.8 : 1.0)
+                        .animation(
+                            (callViewModel.isRecording ?
+                             Animation.easeInOut(duration: 0.8)
+                                .repeatForever(autoreverses: true) : Animation.easeInOut(duration: 0.8)) ,
+                            value: callViewModel.isRecording
+                        )
+                        .disabled(callViewModel.isPaused || telecomManager.isPausedByRemote)
+                        
+                        Text("call_action_record_call")
+                            .foregroundStyle(.white)
+                            .default_text_style(styleSize: 15)
+                    }
+                    .frame(width: geo.size.width * 0.24, height: geo.size.width * 0.24)
+                    
+                }
+                .frame(height: geo.size.height * 0.15)
+                
+                
+            } else {
+                HStack {
+                    
+                    
+                    if callViewModel.isOneOneCall {
+                        VStack {
+                            Button {
+                                showingDialer.toggle()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                    telecomManager.callStarted = false
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        telecomManager.callStarted = true
+                                    }
+                                }
+                            } label: {
+                                HStack {
+                                    Image("dialer")
+                                        .renderingMode(.template)
+                                        .resizable()
+                                        .foregroundStyle(.white)
+                                        .frame(width: 32, height: 32)
+                                }
+                            }
+                            .buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
+                            .frame(width: buttonSize, height: buttonSize)
+                            .background(Color.gray500)
+                            .cornerRadius(40)
+                            
+                            Text("call_action_show_dialer")
+                                .foregroundStyle(.white)
+                                .default_text_style(styleSize: 15)
+                        }
+                        .frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
+                    } else {
+                        VStack {
+                            Button {
+                                changeLayoutSheet = true
+                            } label: {
+                                HStack {
+                                    Image("notebook")
+                                        .renderingMode(.template)
+                                        .resizable()
+                                        .foregroundStyle(.white)
+                                        .frame(width: 32, height: 32)
+                                }
+                            }
+                            .buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
+                            .frame(width: buttonSize, height: buttonSize)
+                            .background(Color.gray500)
+                            .cornerRadius(40)
+                            
+                            Text("call_action_change_layout")
+                                .foregroundStyle(.white)
+                                .default_text_style(styleSize: 15)
+                        }
+                        .frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
+                    }
+                    
+                    
+                    
+                    VStack {
+                        Button {
+                            callViewModel.togglePause()
+                        } label: {
+                            HStack {
+                                Image(callViewModel.isPaused ? "play" : "pause")
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .foregroundStyle(telecomManager.isPausedByRemote ? Color.gray500 : .white)
+                                    .frame(width: 32, height: 32)
+                            }
+                        }
+                        .buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
+                        .frame(width: buttonSize, height: buttonSize)
+                        .background(telecomManager.isPausedByRemote ? .white : (callViewModel.isPaused ? Color.greenSuccess500 : Color.gray500))
+                        .cornerRadius(40)
+                        .disabled(telecomManager.isPausedByRemote)
+                        
+                        Text("call_action_pause_call")
+                            .foregroundStyle(.white)
+                            .default_text_style(styleSize: 15)
+                    }
+                    .frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
+                    
+                    
+                    VStack {
+                        Button {
+                            if callViewModel.isOneOneCall {
+                                callViewModel.toggleRecording()
+                            }
+                        } label: {
+                            HStack {
+                                Image("record-fill")
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .foregroundStyle((callViewModel.isPaused || telecomManager.isPausedByRemote) ? Color.gray500 : .white)
+                                    .frame(width: 32, height: 32)
+                            }
+                        }
+                        .buttonStyle(PressedButtonStyle(buttonSize: buttonSize))
+                        .frame(width: buttonSize, height: buttonSize)
+                        .background((callViewModel.isPaused || telecomManager.isPausedByRemote) ? .white : (callViewModel.isRecording ? Color.redDanger500 : Color.gray500))
+                        .cornerRadius(40)
+                        .disabled(callViewModel.isPaused || telecomManager.isPausedByRemote)
+                        
+                        Text("call_action_record_call")
+                            .foregroundStyle(.white)
+                            .default_text_style(styleSize: 15)
+                    }
+                    .frame(width: geo.size.width * 0.125, height: geo.size.width * 0.125)
+                    
+                }
+                .frame(height: geo.size.height * 0.15)
+                .padding(.horizontal, 20)
+                .padding(.top, 30)
+            }
+            
+            Spacer()
+        }
+        .background(Color.gray600)
+        .frame(maxHeight: .infinity, alignment: .top)
+		
 	}
 	
 	func getAudioRouteImage() {
@@ -2807,20 +2263,34 @@ struct BottomSheetView<Content: View>: View {
 				height: geometry.size.height,
 				alignment: .bottom
 			)
-			.highPriorityGesture(
-				DragGesture()
-					.onChanged { value in
-						currentOffset -= value.translation.height
-						currentOffset = min(max(currentOffset, minHeight), maxHeight)
-						pointingUp = -(((currentOffset - minHeight) / (maxHeight - minHeight)) - 0.5) * 2
-					}
-					.onEnded { _ in
-						withAnimation {
-							currentOffset = (currentOffset - minHeight <= maxHeight - currentOffset) ? minHeight : maxHeight
-							pointingUp = -(((currentOffset - minHeight) / (maxHeight - minHeight)) - 0.5) * 2
-						}
-					}
-			)
+            .simultaneousGesture(
+                DragGesture()
+                    .onChanged { value in
+                        currentOffset -= value.translation.height
+                        currentOffset = min(max(currentOffset, minHeight), maxHeight)
+                        pointingUp = -(((currentOffset - minHeight) / (maxHeight - minHeight)) - 0.5) * 2
+                    }
+                    .onEnded { _ in
+                        withAnimation {
+                            currentOffset = (currentOffset - minHeight <= maxHeight - currentOffset) ? minHeight : maxHeight
+                            pointingUp = -(((currentOffset - minHeight) / (maxHeight - minHeight)) - 0.5) * 2
+                        }
+                    }
+            )
+//			.highPriorityGesture(
+//				DragGesture()
+//					.onChanged { value in
+//						currentOffset -= value.translation.height
+//						currentOffset = min(max(currentOffset, minHeight), maxHeight)
+//						pointingUp = -(((currentOffset - minHeight) / (maxHeight - minHeight)) - 0.5) * 2
+//					}
+//					.onEnded { _ in
+//						withAnimation {
+//							currentOffset = (currentOffset - minHeight <= maxHeight - currentOffset) ? minHeight : maxHeight
+//							pointingUp = -(((currentOffset - minHeight) / (maxHeight - minHeight)) - 0.5) * 2
+//						}
+//					}
+//			)
 			.offset(y: maxHeight - currentOffset)
 		}
 	}

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		371D3C712E48B62500B838CC /* SupportsLongPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D3C702E48B62400B838CC /* SupportsLongPress.swift */; };
 		371D3C732E48E49D00B838CC /* PermissionSettingsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D3C722E48E49900B838CC /* PermissionSettingsFragment.swift */; };
+		3785CF0E2E4C7DE6004B1C00 /* CallViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3785CF0D2E4C7DE0004B1C00 /* CallViewable.swift */; };
 		37E1AB952E44B9B8001B26A4 /* PhoneNumberKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 37E1AB942E44B9B8001B26A4 /* PhoneNumberKit-Dynamic */; };
 		37E1AB962E44E2BA001B26A4 /* PhoneNumberKit-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 37E1AB942E44B9B8001B26A4 /* PhoneNumberKit-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		4ED1F0A881A9ACB5977A8987 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
@@ -242,6 +243,7 @@
 /* Begin PBXFileReference section */
 		371D3C702E48B62400B838CC /* SupportsLongPress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportsLongPress.swift; sourceTree = "<group>"; };
 		371D3C722E48E49900B838CC /* PermissionSettingsFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionSettingsFragment.swift; sourceTree = "<group>"; };
+		3785CF0D2E4C7DE0004B1C00 /* CallViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewable.swift; sourceTree = "<group>"; };
 		660AAF7B2B839271004C0FA6 /* msgNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = msgNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		660AAF842B8392E0004C0FA6 /* msgNotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = msgNotificationService.entitlements; sourceTree = "<group>"; };
 		660D8A702B517D260092694D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -909,6 +911,7 @@
 		D7B5678C2B28883700DE63EB /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				3785CF0D2E4C7DE0004B1C00 /* CallViewable.swift */,
 				D75759302B56D3CE00E7AC10 /* Fragments */,
 				D720E6AB2BAD81C800DDFD87 /* Model */,
 				D7B99E972B29B37F00BE7BF2 /* ViewModel */,
@@ -1259,6 +1262,7 @@
 				D7C48DF42AFA66F900D938CB /* EditContactController.swift in Sources */,
 				D7343FED2D3FE1560059D784 /* HelpFragment.swift in Sources */,
 				C628172E2C1C3A3600DBA646 /* AccountExtension.swift in Sources */,
+				3785CF0E2E4C7DE6004B1C00 /* CallViewable.swift in Sources */,
 				66C491FF2B24D4AC00CEA16D /* FileUtils.swift in Sources */,
 				C62817322C1C400A00DBA646 /* StringExtension.swift in Sources */,
 				D74C9D012ACB098C0021626A /* PermissionManager.swift in Sources */,

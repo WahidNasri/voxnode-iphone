@@ -29,11 +29,13 @@ struct Avatar: View {
 	
 	let avatarSize: CGFloat
     let hidePresence: Bool
+    let showOnlyPhoto: Bool
     
-    init(contactAvatarModel: ContactAvatarModel, avatarSize: CGFloat, hidePresence: Bool = false) {
+    init(contactAvatarModel: ContactAvatarModel, avatarSize: CGFloat, hidePresence: Bool = false, showOnlyPhoto: Bool = false) {
         self.contactAvatarModel = contactAvatarModel
         self.avatarSize = avatarSize
         self.hidePresence = hidePresence
+        self.showOnlyPhoto = showOnlyPhoto
     }
 	
 	var body: some View {
@@ -75,7 +77,7 @@ struct Avatar: View {
 				}
 			}
 			.id(id)
-		} else if !contactAvatarModel.name.isEmpty {
+		} else if !contactAvatarModel.name.isEmpty, !showOnlyPhoto {
 			Image(uiImage: contactsManager.textToImage(
 				firstName: contactAvatarModel.name,
 				lastName: contactAvatarModel.name.components(separatedBy: " ").count > 1
